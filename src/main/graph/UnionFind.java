@@ -1,5 +1,3 @@
-package utility;
-
 public class UnionFind {
 
     class V {

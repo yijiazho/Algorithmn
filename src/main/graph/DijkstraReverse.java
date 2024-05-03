@@ -1,5 +1,3 @@
-package utility;
-
 import java.util.*;
 
 // Problem 1: Find min dist from start point, solve with dijkstra

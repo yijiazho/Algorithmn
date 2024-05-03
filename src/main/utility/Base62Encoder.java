@@ -1,5 +1,3 @@
-package utility;
-
 public class Base62Encoder {
     private static final String BASE_62_CHARS = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
     private static final int BASE = 62;

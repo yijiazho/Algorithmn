@@ -1,5 +1,3 @@
-package utility;
-
 import java.util.*;
 
 public class BuildingPoint implements Comparable<BuildingPoint>{

@@ -1,5 +1,3 @@
-package utility;
-
 public class AVLTree<T> {
 
     private AVLNode<T> root;
