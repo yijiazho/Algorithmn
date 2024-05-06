@@ -1,3 +1,5 @@
+package graph;
+
 import java.util.*;
 // lc 1595
 public class ConnectPoints {

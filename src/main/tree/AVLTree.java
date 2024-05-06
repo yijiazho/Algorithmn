@@ -1,3 +1,5 @@
+package tree;
+
 public class AVLTree<T> {
 
     private AVLNode<T> root;

@@ -1,3 +1,5 @@
+package linear;
+
 import java.util.*;
 
 public class Jump {

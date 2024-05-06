@@ -1,6 +1,4 @@
-
-import java.util.LinkedList;
-import java.util.List;
+package tree;
 
 public class BinaryIndexTree {
 

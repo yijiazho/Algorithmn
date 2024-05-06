@@ -1,3 +1,5 @@
+package linear;
+
 public class KMP {
 
     public int strStr(String haystack, String needle) {

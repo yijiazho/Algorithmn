@@ -1,4 +1,4 @@
-import java.util.*;
+package matrix;
 
 public class MatrixIncrement {
     // one dimension
