@@ -34,6 +34,8 @@ public class Distance {
         return graph;
     }
 
+    // we can only calculate once, using any node as root
+
     // res[0] = number of child nodes
     // res[1] = current sum
     private int[] getDist(List<List<Integer>> graph, int root, int from) {
