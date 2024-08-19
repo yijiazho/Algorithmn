@@ -102,7 +102,14 @@ public class SearchMatrix {
                 };
 
         SearchMatrix instance = new SearchMatrix();
-        boolean res = instance.searchMatrix(matrix, 24);
-        System.out.println(res);
+        long start = System.currentTimeMillis();
+        instance.searchMatrix(matrix, 24);
+        long end = System.currentTimeMillis();
+        System.out.println("time spent" + (end - start));
+
+        long start2 = System.currentTimeMillis();
+        instance.searchMatrix2(matrix, 24);
+        long end2 = System.currentTimeMillis();
+        System.out.println("time spent2" + (end2 - start2));
     }
 }

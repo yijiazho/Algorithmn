@@ -5,18 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 
-
-
-class Node {
-    // id
-
-
-}
-
-// getEdges
-class PathFinder<T extends Comparable<T>> {
-
-
+class PathFinder {
 
     private String path = "";
 
@@ -34,7 +23,7 @@ class PathFinder<T extends Comparable<T>> {
     public String findPath(Map<Character, List<Character>> graph, Character from, Character to) {
 
         if (from == to) {
-            return
+            return "";
         }
         search(graph, from, null, to, new StringBuilder());
         return this.path;
