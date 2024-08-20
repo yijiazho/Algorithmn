@@ -34,6 +34,7 @@ public class UnionFind {
             cur.parent = cur.parent.parent;
             cur = cur.parent;
         }
+
         p.parent = cur;
         return cur;
     }
