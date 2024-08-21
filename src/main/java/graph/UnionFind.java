@@ -30,7 +30,7 @@ public class UnionFind {
 
     public V root(V p) {
         V cur = p;
-        while (cur.parent != null) {
+        while (cur.parent != cur) {
             cur.parent = cur.parent.parent;
             cur = cur.parent;
         }

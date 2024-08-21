@@ -26,10 +26,12 @@ public class CriticalConnections {
         traverse(graph, edgesInCycle, ranks, 0, -1);
 
         List<List<Integer>> criticalEdges = new ArrayList<>();
+
         for (List<Integer> connection: connections) {
-            Collections.sort(connection);
-            if (!edgesInCycle.contains(connection)) {
-                criticalEdges.add(connection);
+            List<Integer> copy = new ArrayList<>(connection);
+            Collections.sort(copy);
+            if (!edgesInCycle.contains(copy)) {
+                criticalEdges.add(copy);
             }
         }
 
@@ -102,5 +104,20 @@ public class CriticalConnections {
             }
         }
         return min;
+    }
+
+    public static void main (String[] args) {
+         CriticalConnections instance = new CriticalConnections();
+         int n = 4;
+         List<List<Integer>> connections = new ArrayList<>();
+         connections.add(List.of(0, 1));
+         connections.add(List.of(1, 2));
+         connections.add(List.of(2, 0));
+         connections.add(List.of(1, 3));
+         List<List<Integer>> res = instance.criticalConnections(n, connections);
+
+         for (List<Integer> list: res) {
+             System.out.println(list);
+         }
     }
 }

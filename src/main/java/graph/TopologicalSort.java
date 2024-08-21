@@ -32,6 +32,7 @@ public class TopologicalSort {
                 return true;
             }
         }
+        // add to head of the list if topological sort
 
         // if no neighbours contain cycle, there's no cycle in this node
         states[cur] = State.VISITED;
