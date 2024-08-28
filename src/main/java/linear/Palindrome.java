@@ -43,7 +43,38 @@ public class Palindrome {
         return reverse + s;
     }
 
+    public boolean validPalindrome(String s) {
+        int l = s.length();
+        // isPalin[i][j][k] means if s.substring(i, j + 1) is palindrome
+        // if remove k from this substring
+        boolean[][][] isPalin = new boolean[l][l][2];
 
+        for (int i = 0; i < l; i++) {
+            isPalin[i][i][0] = true;
+        }
+
+        for (int i = 0; i < l - 1; i++) {
+            isPalin[i][i + 1][1] = true;
+        }
+
+        for (int i = l - 1; i >= 0; i--) {
+            for (int j = i + 1; j < l; j++) {
+                if (j == i + 1) {
+                    isPalin[i][j][0] = s.charAt(i) == s.charAt(j);
+                } else {
+                    isPalin[i][i][0] = isPalin[i][j][0] ||
+                            (isPalin[i + 1][j - 1][0] && s.charAt(i) == s.charAt(j));
+                }
+
+                // remove 1, either s[i], s[j] or not remove
+                isPalin[i][j][1] = isPalin[i][j][1] || isPalin[i + 1][j][0];
+                isPalin[i][j][1] = isPalin[i][j][1] || isPalin[i][j - 1][0];
+                isPalin[i][j][1] = isPalin[i][j][1] || (isPalin[i + 1][j - 1][1] && s.charAt(i) == s.charAt(j));
+            }
+        }
+
+        return isPalin[0][l - 1][0] || isPalin[0][l - 1][1];
+    }
 
     public static final void main(String[] args) {
         Palindrome palindrome = new Palindrome();

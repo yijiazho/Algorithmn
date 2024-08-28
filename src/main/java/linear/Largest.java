@@ -5,6 +5,12 @@ import java.util.Deque;
 
 public class Largest {
 
+    /**
+     * Find the largest rect angular of a given array, the input is an
+     * array of heights of a list of rectangular bar, with width of 1
+     * @param heights heights of the bar
+     * @return the max area of rectangular
+     */
     public int largestRectangleArea(int[] heights) {
         /*
         In order to find the largest area, we need to find the boundaries
@@ -67,10 +73,50 @@ public class Largest {
         }
     }
 
+    /**
+     * Find max area of containing water in an array of boundaries
+     * @param height an array of integers, representing the heights of
+     *               boundaries, with no width, not null
+     * @return maximum amount of water containing in those boundaries
+     * possible
+     */
+    public int maxArea(int[] height) {
+        if (height.length == 0) {
+            return 0;
+        }
+
+        int left = 0;
+        int right = height.length - 1;
+        int max = 0;
+        int minHeight = Math.min(height[left], height[right]);
+
+        /*
+        For each pair of boundaries (left, right), if h[left] <= h[right]
+        then the area of pair(left, right - 1) contains less,
+        while the pair (left + 1, right) could contain more, so eliminate pair
+        (left, right - 1)
+         */
+
+        while (left < right) {
+            if (height[left] <= height[right]) {
+                max = Math.max(max, minHeight * (right - left));
+                left++;
+                minHeight = Math.min(height[left], height[right]);
+            } else {
+                max = Math.max(max, minHeight * (right - left));
+                right--;
+                minHeight = Math.min(height[left], height[right]);
+            }
+        }
+        return max;
+    }
+
+
     public static final void main(String[] args) {
         Largest largest = new Largest();
-        int[] h = new int[] {12, 5, 5, 5, 12};
-        int res = largest.largestRectangleArea(h);
+        int[] h = new int[] {1, 8, 6, 2, 5, 4, 8, 3, 7};
+        int[] h2 = new int[] {1, 5, 6, 3, 7, 2, 5, 7, 6, 5};
+        int res = largest.maxArea(h2);
         System.out.println(res);
     }
 }
