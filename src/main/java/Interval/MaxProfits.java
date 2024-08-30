@@ -22,12 +22,10 @@ public class MaxProfits {
         Collections.sort(jobs, (j1, j2) -> j1.end - j2.end);
 
         // the max profits possible at time equals start time of job
-        // key = job, v = max profits possible
+        // key = job end time, v = max profits possible
         TreeMap<Integer, Path> maxProfitPathByJob = new TreeMap<>();
         maxProfitPathByJob.put(0, new Path(0));
 
-        // a graph that keeps the order
-        Map<Job, Job> graph = new HashMap<>();
         Path maxProfitPath = new Path(0);
 
         // traverse and add
