@@ -67,4 +67,10 @@ public class Calculator {
 
         return sum + prev;
     }
+
+    public static final void main(String[] args) {
+        String expression = "(1+2)*3+4*5";
+        int res = Calculator.calculate(expression);
+        System.out.println(res);
+    }
 }

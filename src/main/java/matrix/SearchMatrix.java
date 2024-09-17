@@ -1,6 +1,6 @@
 package matrix;
 
-public class SearchMatrix {
+public class  SearchMatrix {
 
     // search in a matrix, where
     // each role is ascending
