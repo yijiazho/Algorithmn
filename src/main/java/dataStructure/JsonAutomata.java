@@ -96,7 +96,7 @@ public class JsonAutomata {
                     break;
 
                 case '}':
-                    if (currentState == State.BOOL || currentState == State.NUM || currentState == State.NULL || currentState == State.STR_END) {
+                    if (currentState == State.BOOL || currentState == State.NUM || currentState == State.NULL || currentState == State.STR_END || currentState == State.COL) {
                         currentState = State.END;
                     } else {
                         return false;
@@ -122,8 +122,9 @@ public class JsonAutomata {
 
 
     public static final void main (String[] args) {
-        //String input = "{\"a1\":T,\"b0\":10,\"ab\":\"ba\"}";
+        // String test = "{\"a0\":\"\",\"b1\":}";
         JsonAutomata jsonAutomata = new JsonAutomata();
+
         System.out.println("Enter input to validate:");
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(System.in))) {
             while (true) {
