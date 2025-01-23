@@ -1,6 +1,10 @@
 package dataStructure;
 
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
 public class JsonAutomata {
 
     /**
@@ -118,10 +122,17 @@ public class JsonAutomata {
 
 
     public static final void main (String[] args) {
-        String input = "{\"a1\":T,\"b0\":10,\"ab\":\"ba\"}";
+        //String input = "{\"a1\":T,\"b0\":10,\"ab\":\"ba\"}";
         JsonAutomata jsonAutomata = new JsonAutomata();
-        boolean res = jsonAutomata.validateJson(input);
-        System.out.println(res);
+        System.out.println("Enter input to validate:");
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(System.in))) {
+            while (true) {
+                String input = reader.readLine();
+                System.out.println(jsonAutomata.validateJson(input));
+            }
+        } catch (IOException e) {
+            System.err.println("Error reading input: " + e.getMessage());
+        }
     }
 }
 

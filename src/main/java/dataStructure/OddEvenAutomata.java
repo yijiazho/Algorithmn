@@ -1,5 +1,9 @@
 package dataStructure;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
 public class OddEvenAutomata {
 
 
@@ -48,9 +52,18 @@ public class OddEvenAutomata {
     }
 
     public static void main(String[] args) {
-        String input = "aaaab";
         OddEvenAutomata oddEvenAutomata = new OddEvenAutomata();
-        System.out.println(oddEvenAutomata.validate(input));
+        System.out.println("Enter input to validate:");
+        
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(System.in))) {
+            while (true) {
+                String input = reader.readLine();
+                System.out.println(oddEvenAutomata.validate(input));
+            }
+        } catch (IOException e) {
+            System.err.println("Error reading input: " + e.getMessage());
+        }   
+        
     }
 }
 
