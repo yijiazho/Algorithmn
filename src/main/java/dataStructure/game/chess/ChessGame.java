@@ -1,6 +1,5 @@
 package dataStructure.game.chess;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import dataStructure.game.*;
 
 import java.util.ArrayList;
@@ -9,7 +8,7 @@ import java.util.Optional;
 
 public class ChessGame implements Game<ChessBoard, ChessMove, Player> {
     private static final String GAME_TYPE = "Standard Chess";
-    private static final ObjectMapper objectMapper = new ObjectMapper();
+    //private static final ObjectMapper objectMapper = new ObjectMapper();
 
     private ChessRuleSet ruleSet;
     private ChessBoard board;
@@ -133,7 +132,7 @@ public class ChessGame implements Game<ChessBoard, ChessMove, Player> {
     }
 
     @Override
-    public RuleSet<ChessMove, ChessBoard, Player> getRuleSet() {
+    public RuleSet<ChessBoard, ChessMove, Player> getRuleSet() {
         return ruleSet;
     }
 

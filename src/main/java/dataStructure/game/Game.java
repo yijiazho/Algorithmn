@@ -28,7 +28,7 @@ public interface Game<B, M, P> extends Exportable {
 
     List<M> getMoveHistory();
 
-    RuleSet<M, B, P> getRuleSet();
+    RuleSet<B, M, P> getRuleSet();
 
     String getGameType();
 }

@@ -10,10 +10,12 @@ import java.util.List;
 import java.util.Optional;
 
 
+
+
 public class TicTacToeGame implements Game<TicTacToeBoard, TicTacToeMove, Player> {
     private static final String STANDARD_TYPE = "Standard TicTacToe";
     private static final String CUSTOM_TYPE = "Custom TicTacToe";
-    private static final ObjectMapper objectMapper = new ObjectMapper();
+    //private static final ObjectMapper objectMapper = new ObjectMapper();
 
     private TicTacToeRuleSet ruleSet;
     private TicTacToeBoard board;
@@ -114,7 +116,7 @@ public class TicTacToeGame implements Game<TicTacToeBoard, TicTacToeMove, Player
     }
 
     @Override
-    public RuleSet<TicTacToeMove, TicTacToeBoard, Player> getRuleSet() {
+    public RuleSet<TicTacToeBoard, TicTacToeMove, Player> getRuleSet() {
         return ruleSet;
     }
 

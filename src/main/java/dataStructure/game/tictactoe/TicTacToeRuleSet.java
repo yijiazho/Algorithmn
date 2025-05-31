@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class TicTacToeRuleSet implements RuleSet<TicTacToeMove, TicTacToeBoard, Player> {
+public class TicTacToeRuleSet implements RuleSet<TicTacToeBoard, TicTacToeMove, Player> {
 
     private TicTacToeBoard board;
     private TicTacToeMove move;

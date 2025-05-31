@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class ChessRuleSet implements RuleSet<ChessMove, ChessBoard, Player> {
+public class ChessRuleSet implements RuleSet<ChessBoard, ChessMove, Player> {
 
     @Override
     public boolean isMoveValid(ChessMove move, ChessBoard board, Player player) {
@@ -135,5 +135,10 @@ public class ChessRuleSet implements RuleSet<ChessMove, ChessBoard, Player> {
     @Override
     public boolean supportsDraw() {
         return true;
+    }
+
+    @Override
+    public boolean isDraw(ChessBoard board, List<Player> players) {
+        return false;
     }
 }

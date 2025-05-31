@@ -3,7 +3,7 @@ package dataStructure.game;
 import java.util.List;
 import java.util.Optional;
 
-public interface RuleSet<M, B, P> {
+public interface RuleSet<B, M, P> {
 
     boolean isMoveValid(M move, B board, P player);
 
