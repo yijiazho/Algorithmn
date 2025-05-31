@@ -1,4 +1,4 @@
-package dataStructure;
+package dataStructure.automata;
 
 import java.util.ArrayList;
 import java.util.List;

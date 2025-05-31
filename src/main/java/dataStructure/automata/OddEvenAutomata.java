@@ -1,4 +1,4 @@
-package dataStructure;
+package dataStructure.automata;
 
 import java.io.BufferedReader;
 import java.io.IOException;
