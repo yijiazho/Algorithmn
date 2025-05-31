@@ -1,8 +1,32 @@
 package dataStructure.game;
 
-public interface Player {
+public abstract class Player {
 
-    String getName();
+    private final int id;
+    private final String name;
+    private char symbol;
 
-    char getSymbol();
+    public Player(String name) {
+        this.id = generateId();
+        this.name = name;
+        this.symbol = generateSymbol();
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public char getSymbol() {
+        return symbol;
+    }
+
+    private int generateId() {
+        // TODO: UUID
+        return 0;
+    }
+
+    private char generateSymbol() {
+        // TODO: Generate a unique symbol
+        return 'X';
+    }
 }

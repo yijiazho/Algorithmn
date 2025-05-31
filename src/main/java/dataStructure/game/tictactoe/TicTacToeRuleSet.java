@@ -90,4 +90,9 @@ public class TicTacToeRuleSet implements RuleSet<TicTacToeMove, TicTacToeBoard, 
     public boolean supportsDraw() {
         return true;
     }
+
+    @Override
+    public boolean isDraw(TicTacToeBoard board, List<Player> players) {
+        return !checkWinner(board, players).isPresent() && board.isFull();
+    }
 }

@@ -16,4 +16,6 @@ public interface RuleSet<M, B, P> {
     List<M> generateAvailableMoves(B board, P player);
 
     boolean supportsDraw();
+
+    boolean isDraw(B board, List<P> players);
 }
