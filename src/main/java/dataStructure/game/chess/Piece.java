@@ -10,6 +10,10 @@ public class Piece {
         this.color = color;
     }
 
+    public char getColor() {
+        return color;
+    }
+
     @Override
     public String toString() {
         return color + "-" + type.name().charAt(0);

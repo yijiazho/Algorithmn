@@ -3,6 +3,8 @@ package dataStructure.game.chess;
 
 import dataStructure.game.Board;
 
+import java.util.Optional;
+
 public class ChessBoard implements Board {
     private final Piece[][] grid = new Piece[8][8];
 
@@ -16,6 +18,14 @@ public class ChessBoard implements Board {
 
     public void setCell(int row, int col, Piece piece) {
         grid[row][col] = piece;
+    }
+
+    public Optional<Piece> hasPiece(int row, int col) {
+        if (grid[row][col] != null) {
+            return Optional.of(grid[row][col]);
+        } else {
+            return Optional.empty();
+        }
     }
 
     public void movePiece(int fromRow, int fromCol, int toRow, int toCol) {

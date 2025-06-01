@@ -9,15 +9,8 @@ import java.util.Optional;
 
 public class TicTacToeRuleSet implements RuleSet<TicTacToeBoard, TicTacToeMove, Player> {
 
-    private TicTacToeBoard board;
-    private TicTacToeMove move;
-    private List<Player> players;
 
-    public TicTacToeRuleSet(TicTacToeBoard board, TicTacToeMove move, List<Player> players) {
-        this.board = board;
-        this.move = move;
-        this.players = players;
-    }
+
 
     @Override
     public boolean isMoveValid(TicTacToeMove move, TicTacToeBoard board, Player player) {

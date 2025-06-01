@@ -9,13 +9,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-
-
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class TicTacToeGame implements Game<TicTacToeBoard, TicTacToeMove, Player> {
     private static final String STANDARD_TYPE = "Standard TicTacToe";
     private static final String CUSTOM_TYPE = "Custom TicTacToe";
-    //private static final ObjectMapper objectMapper = new ObjectMapper();
+    private static final ObjectMapper objectMapper = new ObjectMapper();
 
     private TicTacToeRuleSet ruleSet;
     private TicTacToeBoard board;
@@ -128,12 +127,24 @@ public class TicTacToeGame implements Game<TicTacToeBoard, TicTacToeMove, Player
 
     @Override
     public String exportToJson() {
-        return "";
+        try {
+            return objectMapper.writeValueAsString(moveList);
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to export game to JSON", e);
+        }
     }
 
     @Override
     public void importFromJson(String data) {
+        try {
+            List<TicTacToeMove> importedMoves = objectMapper.readValue(data, objectMapper.getTypeFactory().constructCollectionType(List.class, TicTacToeMove.class));
+            initialize();
 
+            moveList.addAll(importedMoves);
+            rebuildBoardFromMoves();
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to import game from JSON", e);
+        }
     }
 
     private void decideFirstPlayer() {
@@ -149,12 +160,11 @@ public class TicTacToeGame implements Game<TicTacToeBoard, TicTacToeMove, Player
     }
 
     private void rebuildBoardFromMoves() {
-        board.clear();
-        int index = 0;
+        initialize();
         for (TicTacToeMove move : moveList) {
-            Player player = players.get(index % players.size());
-            ruleSet.applyMove(move, board, player);
-            index++;
+            ruleSet.applyMove(move, board, currentPlayer);
+            currentPlayer = getNextPlayer();
+            turnCount++;
         }
     }
 }

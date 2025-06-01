@@ -1,6 +1,6 @@
 package dataStructure.game;
 
-public abstract class Player {
+public class Player {
 
     private final int id;
     private final String name;
@@ -12,12 +12,22 @@ public abstract class Player {
         this.symbol = generateSymbol();
     }
 
+    public Player(String name, char symbol) {
+        this.id = generateId();
+        this.name = name;
+        this.symbol = symbol;
+    }
+
     public String getName() {
         return name;
     }
 
     public char getSymbol() {
         return symbol;
+    }
+
+    public void setSymbol(char symbol) {
+        this.symbol = symbol;
     }
 
     private int generateId() {
