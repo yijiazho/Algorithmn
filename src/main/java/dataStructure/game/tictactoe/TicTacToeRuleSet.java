@@ -1,16 +1,13 @@
 package dataStructure.game.tictactoe;
 
-import dataStructure.game.Player;
-import dataStructure.game.RuleSet;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import dataStructure.game.Player;
+import dataStructure.game.RuleSet;
+
 public class TicTacToeRuleSet implements RuleSet<TicTacToeBoard, TicTacToeMove, Player> {
-
-
-
 
     @Override
     public boolean isMoveValid(TicTacToeMove move, TicTacToeBoard board, Player player) {
