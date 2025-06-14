@@ -74,9 +74,9 @@ public class Window {
             }
             if (i >= k) {
                 if (k % 2 == 0) {
-                    median[i] = (nums[smallSet.getLast()]) / 2.0;
+                    median[i] = (nums[smallSet.last()]) / 2.0;
                 } else {
-                    median[i] = nums[smallSet.getLast()];
+                    median[i] = nums[smallSet.last()];
                 }
                 smallSet.pollFirst();
             }
