@@ -1,10 +1,13 @@
 package dataStructure.game.chess;
 
-import dataStructure.game.*;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
+import dataStructure.game.Game;
+import dataStructure.game.GameStatus;
+import dataStructure.game.Player;
+import dataStructure.game.RuleSet;
 
 public class ChessGame implements Game<ChessBoard, ChessMove, Player> {
     private static final String GAME_TYPE = "Standard Chess";
@@ -67,13 +70,11 @@ public class ChessGame implements Game<ChessBoard, ChessMove, Player> {
 
     @Override
     public GameStatus getGameStatus() {
-        if (turnCount == 0) {
-            return GameStatus.READY;
-        }
-        if (!isGameOver()) {
-            return GameStatus.IN_PROGRESS;
-        }
-        return getWinner().isPresent() ? GameStatus.WINNER_FOUND : GameStatus.DRAW;
+        if (isGameOver()) {
+            return getWinner().isPresent() ? GameStatus.WINNER_FOUND : GameStatus.DRAW;
+        } else {
+            return turnCount == 0 ? GameStatus.READY : GameStatus.IN_PROGRESS;
+        }     
     }
 
     @Override
@@ -115,7 +116,7 @@ public class ChessGame implements Game<ChessBoard, ChessMove, Player> {
 
     @Override
     public void reset() {
-        board.clear();
+        board.setupInitialPosition();
         moveList.clear();
         turnCount = 0;
         decideFirstPlayer();

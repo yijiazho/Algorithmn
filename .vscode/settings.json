@@ -1,0 +1,48 @@
+{
+    // Java Language Support
+    "java.configuration.updateBuildConfiguration": "automatic",
+    "java.import.gradle.enabled": false,
+    "java.import.maven.enabled": true,
+    "java.errors.incompleteClasspath.severity": "warning",
+    // Java Navigation & Indexing
+    "java.autobuild.enabled": true,
+    "java.referencesCodeLens.enabled": false,
+    "java.symbols.preferSource": true,
+    "java.index.batch.size": 3000,
+    "java.maxConcurrentBuilds": 4,
+    // Java Testing
+    "java.test.config": {
+        "name": "Default Test Config",
+        "workingDirectory": "${workspaceFolder}"
+    },
+    "java.test.report.showAfterExecution": "always",
+    "java.test.log.level": "info",
+    // Maven
+    "maven.executable.path": "mvn", // or full path if needed
+    "maven.terminal.customEnv": [
+        {
+            "environmentVariable": "MAVEN_OPTS",
+            "value": "-Xmx2g"
+        }
+    ],
+    // Editor Behavior
+    "editor.codeActionsOnSave": {
+        "source.organizeImports": true
+    },
+    "editor.formatOnSave": true,
+    "[java]": {
+        "editor.defaultFormatter": "redhat.java"
+    },
+    // Performance
+    "files.watcherExclude": {
+        "**/target/**": true,
+        "**/.classpath": true,
+        "**/.project": true,
+        "**/.settings": true
+    },
+    // UI Preferences
+    "java.debug.settings.console": "internalConsole",
+    "java.project.referencedLibraries": [
+        "lib/**/*.jar"
+    ]
+}

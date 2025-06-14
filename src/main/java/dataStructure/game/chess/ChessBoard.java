@@ -33,7 +33,7 @@ public class ChessBoard implements Board {
         grid[fromRow][fromCol] = null;
     }
 
-    private void setupInitialPosition() {
+    public void setupInitialPosition() {
         // Simple initial setup for pawns and major pieces
         for (int i = 0; i < 8; i++) {
             grid[1][i] = new Piece(Piece.Type.PAWN, 'B');

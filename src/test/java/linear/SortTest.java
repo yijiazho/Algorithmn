@@ -27,6 +27,20 @@ public class SortTest {
         assertTrue(isArrayincreasing(array));
     }
 
+    @Test
+    public void testQuickSortDecreasing() {
+        int[] array = new int[] {Integer.MAX_VALUE, 9, 1, 0, -1, Integer.MIN_VALUE};
+        sort.sort(array, SortMethod.QUICKSORT);
+        assertTrue(isArrayincreasing(array));
+    }
+
+    @Test
+    public void testMergeSortDecreasing() {
+        int[] array = new int[] {Integer.MAX_VALUE, 9, 1, 0, -1, Integer.MIN_VALUE};
+        sort.sort(array, SortMethod.MERGESORT);
+        assertTrue(isArrayincreasing(array));
+    }
+
     private boolean isArrayincreasing(int[] array) {
         if (array == null || array.length == 0) {
             return true;
