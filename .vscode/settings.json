@@ -27,7 +27,7 @@
     ],
     // Editor Behavior
     "editor.codeActionsOnSave": {
-        "source.organizeImports": true
+        "source.organizeImports": "explicit"
     },
     "editor.formatOnSave": true,
     "[java]": {
