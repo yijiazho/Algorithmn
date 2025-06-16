@@ -2,30 +2,17 @@ package graph;
 
 public class UnionFind {
 
-    class V {
-        int id;
-        V parent;
-        int size;
+    private V[] vertices;
 
-        public V(int id) {
-            this.id = id;
-            size = 1;
-            parent = this;
+    public UnionFind(int n) {
+        vertices = new V[n];
+        for (int i = 0; i < n; i++) {
+            vertices[i] = new V(i);
         }
+    }
 
-        @Override
-        public boolean equals(Object o) {
-          if (!(o instanceof V)) {
-              return false;
-          }
-          V that = (V) o;
-          return this.id == that.id;
-        }
-
-        @Override
-        public int hashCode() {
-            return id * 31 + 29;
-        }
+    public V get(int id) {
+        return vertices[id];
     }
 
     public V root(V p) {
@@ -40,7 +27,7 @@ public class UnionFind {
     }
 
     public boolean find(V p, V q) {
-        return p.parent == q.parent;
+        return root(p).equals(root(q));
     }
 
     public void union(V p, V q) {
@@ -52,6 +39,32 @@ public class UnionFind {
         } else {
             rootP.parent = rootQ;
             rootQ.size += rootP.size;
+        }
+    }
+
+    class V {
+        int id;
+        V parent;
+        int size;
+
+        public V(int id) {
+            this.id = id;
+            size = 1;
+            parent = this;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (!(o instanceof V)) {
+                return false;
+            }
+            V that = (V) o;
+            return this.id == that.id;
+        }
+
+        @Override
+        public int hashCode() {
+            return id * 31 + 29;
         }
     }
 }

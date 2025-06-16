@@ -18,7 +18,7 @@ public class Dijkstra {
         }
     }
 
-    class Node{
+    class Node {
         int n;
         int dist;
 
@@ -38,7 +38,7 @@ public class Dijkstra {
         while (!pq.isEmpty()) {
             Node cur = pq.poll();
 
-            for (Path path: graph.get(cur.n)) {
+            for (Path path : graph.get(cur.n)) {
                 int next = path.to;
                 if (dist[next] > dist[cur.n] + path.weight) {
                     dist[next] = dist[cur.n] + path.weight;
@@ -54,13 +54,12 @@ public class Dijkstra {
         for (int i = 0; i < n; i++) {
             res.add(new ArrayList<>());
         }
-        for (int[] edge: edges) {
+        for (int[] edge : edges) {
             Path path = new Path(edge[0], edge[1], edge[2]);
             res.get(edge[0]).add(path);
         }
 
         return res;
     }
-
 
 }

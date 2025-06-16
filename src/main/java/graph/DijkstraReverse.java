@@ -1,6 +1,11 @@
 package graph;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.PriorityQueue;
 
 // Problem 1: Find min dist from start point, solve with dijkstra
 // Problem 2: add a new edge (u, v) on the graph, and update the min distance array?
@@ -18,6 +23,24 @@ public class DijkstraReverse {
         }
     }
 
+    /**
+     * Given a connected, undirected, and weighted graph with n nodes, with all
+     * edges having weights,
+     * find if it is possible to change the weight of some edges to make the
+     * shortest path from source to destination equal to target.
+     * If it is possible, return the modified edges with their new weights,
+     * otherwise return int[0][0]
+     * 
+     * @param n           total number of nodes
+     * @param edges       a list of edges, where edges[i] = {from, to, weight}, if
+     *                    weight is -1, it means the weight is unknown
+     *                    and can be changed to any positive integer.
+     * @param source      the starting node
+     * @param destination the destination node
+     * @param target      the target distance we want to achieve
+     * @return a 2D array of modified edges with their new weights, or int[0][0] if
+     *         not possible
+     */
     public int[][] modifiedGraphEdges(int n, int[][] edges, int source, int destination, int target) {
         // initialize
         Map<Integer, List<Edge>> graph = buildGraph(edges);
@@ -27,7 +50,7 @@ public class DijkstraReverse {
 
         // {index, dist[index]}
         PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> a[1] - b[1]);
-        pq.offer(new int[]{source, 0});
+        pq.offer(new int[] { source, 0 });
         dijkstra(graph, dist, destination, pq);
 
         // corner cases
@@ -41,7 +64,7 @@ public class DijkstraReverse {
         // for each unknown edge, try to set weight to 1, and add to graph
         // if it successfully updated the dist[dest] < target,
         // we found the target, and set its weight to the diff
-        for (int[] edge: edges) {
+        for (int[] edge : edges) {
             if (edge[2] == -1) {
                 edge[2] = 1;
                 int from = edge[0];
@@ -55,13 +78,13 @@ public class DijkstraReverse {
                 graph.put(to, toEdges);
 
                 pq.clear();
-                pq.offer(new int[]{edge[0], dist[edge[0]]});
-                pq.offer(new int[]{edge[1], dist[edge[1]]});
+                pq.offer(new int[] { edge[0], dist[edge[0]] });
+                pq.offer(new int[] { edge[1], dist[edge[1]] });
 
                 dijkstra(graph, dist, destination, pq);
                 if (dist[destination] <= target) {
                     // update to the diff
-                    edge[2] += target- dist[destination];
+                    edge[2] += target - dist[destination];
                     return fill(edges);
                 }
             }
@@ -74,7 +97,7 @@ public class DijkstraReverse {
     private Map<Integer, List<Edge>> buildGraph(int[][] edges) {
         Map<Integer, List<Edge>> graph = new HashMap<>();
 
-        for (int[] edge: edges) {
+        for (int[] edge : edges) {
             int from = edge[0];
             int to = edge[1];
             int weight = edge[2];
@@ -98,10 +121,10 @@ public class DijkstraReverse {
                 return;
             }
             if (graph.containsKey(cur[0])) {
-                for (Edge edge: graph.get(cur[0])) {
+                for (Edge edge : graph.get(cur[0])) {
                     if (dist[edge.to] > edge.weight + dist[cur[0]]) {
                         dist[edge.to] = edge.weight + dist[cur[0]];
-                        pq.offer(new int[]{edge.to, dist[edge.to]});
+                        pq.offer(new int[] { edge.to, dist[edge.to] });
                     }
                 }
             }
@@ -109,7 +132,7 @@ public class DijkstraReverse {
     }
 
     private int[][] fill(int[][] edges) {
-        for (int[] edge: edges) {
+        for (int[] edge : edges) {
             if (edge[2] == -1) {
                 edge[2] = 1000000000;
             }
@@ -118,7 +141,7 @@ public class DijkstraReverse {
     }
 
     public static void main(String[] args) {
-        int[][] edges = new int[][] {{4,1,-1},{2,0,-1},{0,3,-1},{4,3,-1}};
+        int[][] edges = new int[][] { { 4, 1, -1 }, { 2, 0, -1 }, { 0, 3, -1 }, { 4, 3, -1 } };
         DijkstraReverse instance = new DijkstraReverse();
         int[][] res = instance.modifiedGraphEdges(5, edges, 0, 1, 5);
     }

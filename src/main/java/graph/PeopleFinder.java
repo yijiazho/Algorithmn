@@ -1,6 +1,11 @@
 package graph;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 public class PeopleFinder {
     class Meeting {
@@ -42,7 +47,17 @@ public class PeopleFinder {
         return root(p) == root(q);
     }
 
-    // find a list of all people sharing the information of people 0
+    /**
+     * Find all people who share information with person 0 after all meetings,
+     * Assuming firstPerson also knows the information.
+     * 
+     * @param n           total number of people
+     * @param meetings    a list of meetings, meetings[i] = {person1, person2, time}
+     *                    If multiple meetings happen at the same time, assume they
+     *                    are in the same room.
+     * @param firstPerson the first person who knows the information
+     * @return a list of people who know the information after all meetings
+     */
     public List<Integer> findAllPeople(int n, int[][] meetings, int firstPerson) {
         // create a meeting action for each timestamp
         Arrays.sort(meetings, (m1, m2) -> {
@@ -54,7 +69,7 @@ public class PeopleFinder {
         });
         List<Meeting> meetingList = new ArrayList<>();
         meetingList.add(new Meeting(-1));
-        for (int[] meeting: meetings) {
+        for (int[] meeting : meetings) {
             Meeting lastMeeting = meetingList.get(meetingList.size() - 1);
             if (lastMeeting.time == meeting[2] &&
                     (lastMeeting.set.contains(meeting[0]) || lastMeeting.set.contains(meeting[1]))) {
@@ -85,14 +100,14 @@ public class PeopleFinder {
         for (int i = 0; i < meetingList.size(); i++) {
             Meeting m = meetingList.get(i);
             boolean hasInformation = false;
-            for (int participant: m.set) {
+            for (int participant : m.set) {
                 if (find(0, participant)) {
-                   hasInformation = true;
-                   break;
+                    hasInformation = true;
+                    break;
                 }
             }
             if (hasInformation) {
-                for (int participant: m.set) {
+                for (int participant : m.set) {
                     if (!find(0, participant)) {
                         union(0, participant);
                         res.add(participant);
@@ -102,13 +117,5 @@ public class PeopleFinder {
         }
 
         return res;
-    }
-
-    public static void main(String[] args) {
-        PeopleFinder instance = new PeopleFinder();
-
-        int[][] meetings = new int[][]{{0,2,1}, {1,3,1}, {4,5,1}};
-        List<Integer> list = instance.findAllPeople(6, meetings, 1);
-        System.out.println(list);
     }
 }
