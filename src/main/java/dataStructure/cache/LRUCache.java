@@ -1,4 +1,4 @@
-package dataStructure;
+package dataStructure.cache;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -11,9 +11,9 @@ public class LRUCache<K, V> {
         Node left;
         Node right;
 
-        public Node(K _key, V _value) {
-            key = _key;
-            value = _value;
+        public Node(K key, V value) {
+            this.key = key;
+            this.value = value;
         }
 
         public Node() {
@@ -21,16 +21,18 @@ public class LRUCache<K, V> {
         }
     }
 
-    int capacity;
-    int size;
-    Node head;
-    Node tail;
-    Map<K, Node> map;
+    private int capacity;
+    private int size;
+    private Node head;
+    private Node tail;
+    private Map<K, Node> map;
+    // autowire this
+    private Client<K, V> client;
 
-    public LRUCache(int _capacity) {
-        capacity = _capacity;
+    public LRUCache(int capacity) {
+        this.capacity = capacity;
         size = 0;
-        
+
         head = new Node();
         tail = new Node();
         head.right = tail;
@@ -45,7 +47,7 @@ public class LRUCache<K, V> {
             insertToTail(node);
             return node.value;
         } else {
-            return null;
+            return client.get(key);
         }
     }
 
@@ -67,8 +69,8 @@ public class LRUCache<K, V> {
                 map.remove(removedNode.key);
             }
         }
+        client.put(key, value);
     }
-
 
     private void insertToTail(Node node) {
         Node last = tail.left;

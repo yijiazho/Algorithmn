@@ -5,43 +5,44 @@ import java.util.Queue;
 
 public class MyStack<T> {
 
-    private Queue<Object> queue;
+    private Queue<Node<T>> queue;
 
     public MyStack() {
         queue = new LinkedList<>();
     }
 
     public void push(T value) {
-        Queue<Object> newQueue = new LinkedList<>();
+        Queue<Node<T>> newQueue = new LinkedList<>();
 
-        newQueue.offer(value);
-        newQueue.offer(queue);
-
+        newQueue.offer(new Node<>(value, queue));
         queue = newQueue;
     }
 
     public T pop() {
-        T value = (T) queue.poll();
-        queue = (Queue) queue.peek();
-        return value;
+        Node<T> node = queue.poll();
+        if (node == null) {
+            return null;
+        }
+        queue = node.next != null ? node.next : new LinkedList<>();
+        return node.value;
     }
 
     public T top() {
-        return (T) queue.peek();
+        Node<T> node = queue.peek();
+        return node != null ? node.value : null;
     }
 
     public boolean empty() {
         return queue.isEmpty();
     }
 
-    /*
-    {}
-    push 1 {1}
-    push 2 {2, {1}}
-    push 3 {3, {2, {1}}}
-    pop ->  queue.poll()
-    peek -> queue.peek()
+    private static class Node<T> {
+        T value;
+        Queue<Node<T>> next;
 
-
-     */
+        Node(T value, Queue<Node<T>> next) {
+            this.value = value;
+            this.next = next;
+        }
+    }
 }
