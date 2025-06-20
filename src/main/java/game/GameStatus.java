@@ -1,4 +1,4 @@
-package dataStructure.game;
+package game;
 
 public enum GameStatus {
     READY,

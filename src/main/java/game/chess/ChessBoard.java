@@ -1,9 +1,8 @@
-package dataStructure.game.chess;
-
-
-import dataStructure.game.Board;
+package game.chess;
 
 import java.util.Optional;
+
+import game.Board;
 
 public class ChessBoard implements Board {
     private final Piece[][] grid = new Piece[8][8];

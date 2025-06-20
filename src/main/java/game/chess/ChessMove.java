@@ -1,7 +1,7 @@
-package dataStructure.game.chess;
+package game.chess;
 
-import dataStructure.game.Move;
-import dataStructure.game.Player;
+import game.Move;
+import game.Player;
 
 public class ChessMove extends Move<Player> {
     public final int fromRow, fromCol;

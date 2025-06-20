@@ -1,7 +1,10 @@
-package dataStructure.game.chess;
+package game.chess;
 
 public class Piece {
-    public enum Type { KING, QUEEN, ROOK, BISHOP, KNIGHT, PAWN }
+    public enum Type {
+        KING, QUEEN, ROOK, BISHOP, KNIGHT, PAWN
+    }
+
     public final Type type;
     public final char color; // 'W' or 'B'
 

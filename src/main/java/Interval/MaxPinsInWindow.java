@@ -1,25 +1,25 @@
-package Interval;
+package interval;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.TreeMap;
-import java.util.stream.Collectors;
 
 public class MaxPinsInWindow {
 
-    /** Find the max number of pins can be displayed in the same window
+    /**
+     * Find the max number of pins can be displayed in the same window
      *
-     * @param pinList a list of pins, including start, end and Column
+     * @param pinList    a list of pins, including start, end and Column
      * @param windowSize the size of the window
      * @return
      */
     public int maxInWindow(List<Pin> pinList, int windowSize) {
         /*
-        Regardless of L, R
-        if we sort the pinList and put in a data structure and traverse it
-        if current pair is (start, end) all we want to know is the
-        index whose start is end - windowSize or larger
+         * Regardless of L, R
+         * if we sort the pinList and put in a data structure and traverse it
+         * if current pair is (start, end) all we want to know is the
+         * index whose start is end - windowSize or larger
          */
 
         // sort the list, assume non overlap, and keep the index
@@ -31,21 +31,19 @@ public class MaxPinsInWindow {
         // if null then the total is 1
         // otherwise the total is index - lastIndex + 1
 
-
         /*
-        Now consider L and R
-        keep 2 sorted list, and two map
-
-        in the traversal, we have (start, end)
-        try to find the smallest larger or equal for end - windowSize
-        in both treeMaps,
-        suppose this one is left.
-        then for left column, we do exactly like mentioned, get totalLeft
-        For the right column, we also find the smallest larger/equal for ()
-        ands compare with the tail of the right
-        total = (totalLeft + totalRight)
+         * Now consider L and R
+         * keep 2 sorted list, and two map
+         * 
+         * in the traversal, we have (start, end)
+         * try to find the smallest larger or equal for end - windowSize
+         * in both treeMaps,
+         * suppose this one is left.
+         * then for left column, we do exactly like mentioned, get totalLeft
+         * For the right column, we also find the smallest larger/equal for ()
+         * ands compare with the tail of the right
+         * total = (totalLeft + totalRight)
          */
-
 
         Collections.sort(pinList, (p1, p2) -> p1.start - p2.start);
         int leftIndex = -1;
@@ -58,7 +56,7 @@ public class MaxPinsInWindow {
         int rightTotal;
         int max = 0;
 
-        for (Pin pin: pinList) {
+        for (Pin pin : pinList) {
             if (Column.LEFT.equals(pin.column)) {
                 leftIndex++;
                 leftTotal = 0;
@@ -124,12 +122,10 @@ public class MaxPinsInWindow {
         pinList.add(new Pin(12, 14, Column.LEFT));
         pinList.add(new Pin(18, 20, Column.LEFT));
 
-
         pinList.add(new Pin(3, 9, Column.RIGHT));
         pinList.add(new Pin(10, 13, Column.RIGHT));
         pinList.add(new Pin(14, 15, Column.RIGHT));
         pinList.add(new Pin(19, 30, Column.RIGHT));
-
 
         int res = maxPinsInWindow.maxInWindow(pinList, 13);
         System.out.println(res);

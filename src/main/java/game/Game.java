@@ -1,4 +1,4 @@
-package dataStructure.game;
+package game;
 
 import java.util.List;
 import java.util.Optional;

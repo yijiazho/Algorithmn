@@ -1,19 +1,18 @@
 package game;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class Probability {
     /**
-     * @param n the final probability of having less than n points
-     * @param k the points threshold until stop drawing
+     * @param n         the final probability of having less than n points
+     * @param k         the points threshold until stop drawing
      * @param maxPoints the maximum points of a card, which is randomly
      *                  distributed in range[1, maxPoints]
      * @return the probability of having less or equal than n points
-     * when current playing keeps drawing until first time reaches k
-     * or more points if all cards are evenly distributed in range
-     * [1, maxPoints]
+     *         when current playing keeps drawing until first time reaches k
+     *         or more points if all cards are evenly distributed in range
+     *         [1, maxPoints]
      */
     public double game21Point(int n, int k, int maxPoints) {
         // corner cases

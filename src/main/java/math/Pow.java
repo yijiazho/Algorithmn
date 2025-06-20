@@ -4,6 +4,7 @@ public class Pow {
 
     /**
      * Similar to Math.pow, but with log(n) time complexity
+     * 
      * @param x the base
      * @param n the exponential
      * @return the value of the pow
@@ -28,6 +29,7 @@ public class Pow {
 
     /**
      * similar to Math.pow, return the power of a int matrix
+     * 
      * @param A, base, must have same length and height
      * @param n, exponential, must be positive
      * @return A^n in linear algebra in log(n) time complexity
@@ -38,13 +40,12 @@ public class Pow {
         if (h != w) {
             throw new IllegalArgumentException("Matrix height and width mismatch");
         }
-        int[][] res = new int[h][h];
 
         if (n == 1) {
             return A;
         }
 
-        int[][] half = pow(A, n/2);
+        int[][] half = pow(A, n / 2);
         if (n % 2 == 0) {
             return multiply(half, half);
         } else {

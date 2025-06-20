@@ -1,17 +1,17 @@
-package dataStructure.game.chess;
+package game.chess;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import dataStructure.game.Game;
-import dataStructure.game.GameStatus;
-import dataStructure.game.Player;
-import dataStructure.game.RuleSet;
+import game.Game;
+import game.GameStatus;
+import game.Player;
+import game.RuleSet;
 
 public class ChessGame implements Game<ChessBoard, ChessMove, Player> {
     private static final String GAME_TYPE = "Standard Chess";
-    //private static final ObjectMapper objectMapper = new ObjectMapper();
+    // private static final ObjectMapper objectMapper = new ObjectMapper();
 
     private ChessRuleSet ruleSet;
     private ChessBoard board;
@@ -74,7 +74,7 @@ public class ChessGame implements Game<ChessBoard, ChessMove, Player> {
             return getWinner().isPresent() ? GameStatus.WINNER_FOUND : GameStatus.DRAW;
         } else {
             return turnCount == 0 ? GameStatus.READY : GameStatus.IN_PROGRESS;
-        }     
+        }
     }
 
     @Override
@@ -96,7 +96,8 @@ public class ChessGame implements Game<ChessBoard, ChessMove, Player> {
 
     @Override
     public void undoLastMove() {
-        if (moveList.isEmpty()) return;
+        if (moveList.isEmpty())
+            return;
 
         moveList.remove(moveList.size() - 1);
         rebuildBoardFromHistory();

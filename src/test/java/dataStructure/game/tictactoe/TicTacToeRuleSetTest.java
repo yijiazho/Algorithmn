@@ -1,15 +1,19 @@
 package dataStructure.game.tictactoe;
 
-import dataStructure.game.Player;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import game.Player;
+import game.tictactoe.TicTacToeBoard;
+import game.tictactoe.TicTacToeMove;
+import game.tictactoe.TicTacToeRuleSet;
 
 public class TicTacToeRuleSetTest {
 
@@ -31,7 +35,7 @@ public class TicTacToeRuleSetTest {
         TicTacToeMove move = new TicTacToeMove(1, 1, player1);
         assertTrue(ruleSet.isMoveValid(move, board, player1));
         ruleSet.applyMove(move, board, player1);
-        assertEquals('o' , board.getCell(1, 1));
+        assertEquals('o', board.getCell(1, 1));
     }
 
     @Test
@@ -57,9 +61,9 @@ public class TicTacToeRuleSetTest {
     }
 
     /**
-     *  o x x
-     *  x o o
-     *  o o x
+     * o x x
+     * x o o
+     * o o x
      */
     @Test
     public void testGameDraw() {

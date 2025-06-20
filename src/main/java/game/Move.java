@@ -1,4 +1,4 @@
-package dataStructure.game;
+package game;
 
 public abstract class Move<P> {
     private final P player;

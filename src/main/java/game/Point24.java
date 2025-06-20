@@ -9,10 +9,10 @@ public class Point24 {
 
     public boolean point24(int[] cards) {
         List<Double> list = new ArrayList<>();
-        for (int card: cards) {
+        for (int card : cards) {
             list.add((double) card);
         }
-         return calculate(list);
+        return calculate(list);
     }
 
     // curList is a list of integer formed by calculation
@@ -37,7 +37,7 @@ public class Point24 {
 
                 // -
                 curList.add(Math.abs(first - second));
-                if (calculate(curList)){
+                if (calculate(curList)) {
                     return true;
                 }
                 curList.remove(Math.abs(first - second));
@@ -76,7 +76,7 @@ public class Point24 {
 
     public static final void main(String[] args) {
         Point24 instance = new Point24();
-        int[] input = new int[]{1, 1, 8, 7};
+        int[] input = new int[] { 1, 1, 8, 7 };
         boolean res = instance.point24(input);
         System.out.println(res);
     }

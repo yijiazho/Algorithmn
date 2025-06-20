@@ -1,7 +1,6 @@
-package dataStructure.game.tictactoe;
+package game.tictactoe;
 
-import dataStructure.game.Board;
-
+import game.Board;
 
 public class TicTacToeBoard implements Board {
     private final char[][] grid;
@@ -28,7 +27,8 @@ public class TicTacToeBoard implements Board {
     public boolean isFull() {
         for (char[] row : grid)
             for (char cell : row)
-                if (cell == ' ') return false;
+                if (cell == ' ')
+                    return false;
         return true;
     }
 

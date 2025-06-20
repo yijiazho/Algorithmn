@@ -1,4 +1,4 @@
-package dataStructure.game;
+package game;
 
 public class Player {
 

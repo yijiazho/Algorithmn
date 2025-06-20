@@ -36,7 +36,7 @@ public class DijkstraReverseTest {
     }
 
     @Test
-    public void testDijkstraReverseNoPath() {
+    public void testDijkstraReverseAlreadyConnected() {
         // create a graph that the distance is already smaller than the target
         int[][] edges = new int[][] {
                 { 0, 1, 1 },
@@ -44,6 +44,22 @@ public class DijkstraReverseTest {
                 { 0, 3, 3 },
                 { 1, 3, -1 },
                 { 2, 3, 5 }
+        };
+
+        int[][] result = dijkstraReverse.modifiedGraphEdges(4, edges, 0, 3, 4);
+        int[][] expected = new int[0][0];
+        assertArrayEquals(expected, result);
+    }
+
+    @Test
+    public void testDijkstraReverseNoPath() {
+        // create a graph that the distance is already smaller than the target
+        int[][] edges = new int[][] {
+                { 0, 1, 4 },
+                { 0, 2, 4 },
+                { 0, 3, 10 },
+                { 1, 3, -1 },
+                { 2, 3, 4 }
         };
 
         int[][] result = dijkstraReverse.modifiedGraphEdges(4, edges, 0, 3, 4);

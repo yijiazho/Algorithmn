@@ -1,15 +1,15 @@
-package dataStructure.game.tictactoe;
-
-import dataStructure.game.Game;
-import dataStructure.game.GameStatus;
-import dataStructure.game.Player;
-import dataStructure.game.RuleSet;
+package game.tictactoe;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import game.Game;
+import game.GameStatus;
+import game.Player;
+import game.RuleSet;
 
 public class TicTacToeGame implements Game<TicTacToeBoard, TicTacToeMove, Player> {
     private static final String STANDARD_TYPE = "Standard TicTacToe";
@@ -70,7 +70,7 @@ public class TicTacToeGame implements Game<TicTacToeBoard, TicTacToeMove, Player
         } else if (!ruleSet.isGameOver(board, players)) {
             return GameStatus.IN_PROGRESS;
         } else {
-            return ruleSet.checkWinner(board, players).isEmpty() ? GameStatus.DRAW: GameStatus.WINNER_FOUND;
+            return ruleSet.checkWinner(board, players).isEmpty() ? GameStatus.DRAW : GameStatus.WINNER_FOUND;
         }
     }
 
@@ -137,7 +137,8 @@ public class TicTacToeGame implements Game<TicTacToeBoard, TicTacToeMove, Player
     @Override
     public void importFromJson(String data) {
         try {
-            List<TicTacToeMove> importedMoves = objectMapper.readValue(data, objectMapper.getTypeFactory().constructCollectionType(List.class, TicTacToeMove.class));
+            List<TicTacToeMove> importedMoves = objectMapper.readValue(data,
+                    objectMapper.getTypeFactory().constructCollectionType(List.class, TicTacToeMove.class));
             initialize();
 
             moveList.addAll(importedMoves);

@@ -1,11 +1,11 @@
-package dataStructure.game.tictactoe;
+package game.tictactoe;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import dataStructure.game.Player;
-import dataStructure.game.RuleSet;
+import game.Player;
+import game.RuleSet;
 
 public class TicTacToeRuleSet implements RuleSet<TicTacToeBoard, TicTacToeMove, Player> {
 

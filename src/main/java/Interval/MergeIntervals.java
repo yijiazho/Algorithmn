@@ -1,4 +1,4 @@
-package Interval;
+package interval;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -14,17 +14,16 @@ public class MergeIntervals {
         // make sure each time we merge 2 intervals only
         List<int[]> list = new ArrayList<>();
 
-        for (int[] interval: intervals) {
+        for (int[] interval : intervals) {
             // if no overlap, add to list
             // otherwise, merge the tail and this interval
             if (list.isEmpty() || !overlap(interval, list.get(list.size() - 1))) {
                 list.add(interval);
             } else {
                 int[] tail = list.remove(list.size() - 1);
-                list.add(new int[]{Math.min(tail[0], interval[0]), Math.max(tail[1], interval[1])});
+                list.add(new int[] { Math.min(tail[0], interval[0]), Math.max(tail[1], interval[1]) });
             }
         }
-
 
         return list;
     }

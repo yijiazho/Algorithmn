@@ -1,11 +1,11 @@
-package dataStructure.game.chess;
-
-import dataStructure.game.Player;
-import dataStructure.game.RuleSet;
+package game.chess;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
+import game.Player;
+import game.RuleSet;
 
 public class ChessRuleSet implements RuleSet<ChessBoard, ChessMove, Player> {
 
@@ -150,7 +150,8 @@ public class ChessRuleSet implements RuleSet<ChessBoard, ChessMove, Player> {
             }
             if (!hasKing) {
                 for (Player opponent : players) {
-                    if (opponent.getSymbol() != player.getSymbol()) return Optional.of(opponent);
+                    if (opponent.getSymbol() != player.getSymbol())
+                        return Optional.of(opponent);
                 }
             }
         }

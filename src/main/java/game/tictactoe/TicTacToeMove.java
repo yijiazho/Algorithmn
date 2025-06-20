@@ -1,8 +1,7 @@
-package dataStructure.game.tictactoe;
+package game.tictactoe;
 
-import dataStructure.game.Move;
-import dataStructure.game.Player;
-
+import game.Move;
+import game.Player;
 
 public class TicTacToeMove extends Move<Player> {
     public final int row;
