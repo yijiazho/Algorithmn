@@ -6,12 +6,12 @@ import java.util.Optional;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import game.Game;
+import game.BoardGame;
 import game.GameStatus;
 import game.Player;
 import game.RuleSet;
 
-public class TicTacToeGame implements Game<TicTacToeBoard, TicTacToeMove, Player> {
+public class TicTacToeGame implements BoardGame<TicTacToeBoard, TicTacToeMove, Player> {
     private static final String STANDARD_TYPE = "Standard TicTacToe";
     private static final String CUSTOM_TYPE = "Custom TicTacToe";
     private static final ObjectMapper objectMapper = new ObjectMapper();
@@ -81,7 +81,7 @@ public class TicTacToeGame implements Game<TicTacToeBoard, TicTacToeMove, Player
 
     @Override
     public void makeMove(TicTacToeMove move) {
-        ruleSet.applyMove(move, board, currentPlayer);
+        ruleSet.applyMove(move, board);
         currentPlayer = getNextPlayer();
         moveList.add(move);
         turnCount++;
@@ -163,7 +163,7 @@ public class TicTacToeGame implements Game<TicTacToeBoard, TicTacToeMove, Player
     private void rebuildBoardFromMoves() {
         initialize();
         for (TicTacToeMove move : moveList) {
-            ruleSet.applyMove(move, board, currentPlayer);
+            ruleSet.applyMove(move, board);
             currentPlayer = getNextPlayer();
             turnCount++;
         }

@@ -10,7 +10,7 @@ import game.RuleSet;
 public class TicTacToeRuleSet implements RuleSet<TicTacToeBoard, TicTacToeMove, Player> {
 
     @Override
-    public boolean isMoveValid(TicTacToeMove move, TicTacToeBoard board, Player player) {
+    public boolean isMoveValid(TicTacToeMove move, TicTacToeBoard board) {
         int row = move.row;
         int col = move.col;
         return row >= 0 && row < 3 &&
@@ -19,8 +19,8 @@ public class TicTacToeRuleSet implements RuleSet<TicTacToeBoard, TicTacToeMove, 
     }
 
     @Override
-    public void applyMove(TicTacToeMove move, TicTacToeBoard board, Player player) {
-        board.setCell(move.row, move.col, player.getSymbol());
+    public void applyMove(TicTacToeMove move, TicTacToeBoard board) {
+        board.setCell(move.row, move.col, move.getPlayer().getSymbol());
     }
 
     @Override

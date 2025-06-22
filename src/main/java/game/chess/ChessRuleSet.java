@@ -10,9 +10,9 @@ import game.RuleSet;
 public class ChessRuleSet implements RuleSet<ChessBoard, ChessMove, Player> {
 
     @Override
-    public boolean isMoveValid(ChessMove move, ChessBoard board, Player player) {
+    public boolean isMoveValid(ChessMove move, ChessBoard board) {
         Piece piece = board.getCell(move.fromRow, move.fromCol);
-        if (piece == null || piece.color != player.getSymbol()) {
+        if (piece == null || piece.color != move.getPlayer().getSymbol()) {
             return false;
         }
 
@@ -130,7 +130,7 @@ public class ChessRuleSet implements RuleSet<ChessBoard, ChessMove, Player> {
     }
 
     @Override
-    public void applyMove(ChessMove move, ChessBoard board, Player player) {
+    public void applyMove(ChessMove move, ChessBoard board) {
         ChessBoard newBoard = (ChessBoard) board.copy();
         newBoard.movePiece(move.fromRow, move.fromCol, move.toRow, move.toCol);
     }
@@ -173,7 +173,7 @@ public class ChessRuleSet implements RuleSet<ChessBoard, ChessMove, Player> {
                     for (int r2 = 0; r2 < 8; r2++) {
                         for (int c2 = 0; c2 < 8; c2++) {
                             ChessMove move = new ChessMove(r1, c1, r2, c2, player);
-                            if (isMoveValid(move, board, player)) {
+                            if (isMoveValid(move, board)) {
                                 moves.add(move);
                             }
                         }

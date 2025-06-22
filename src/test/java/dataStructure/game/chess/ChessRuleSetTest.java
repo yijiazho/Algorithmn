@@ -35,19 +35,19 @@ public class ChessRuleSetTest {
     @Test
     public void testInitialPawnMoveValid() {
         ChessMove move = new ChessMove(6, 0, 5, 0, white);
-        assertTrue(ruleSet.isMoveValid(move, board, white));
+        assertTrue(ruleSet.isMoveValid(move, board));
     }
 
     @Test
     public void testInvalidMoveToOccupiedBySameColor() {
         ChessMove move = new ChessMove(7, 0, 7, 1, white);
-        assertFalse(ruleSet.isMoveValid(move, board, white));
+        assertFalse(ruleSet.isMoveValid(move, board));
     }
 
     @Test
     public void testKnightMoveValid() {
         ChessMove move = new ChessMove(7, 1, 5, 2, white);
-        assertTrue(ruleSet.isMoveValid(move, board, white));
+        assertTrue(ruleSet.isMoveValid(move, board));
     }
 
     @Test
@@ -55,7 +55,7 @@ public class ChessRuleSetTest {
         // manually remove the black pawn
         board.setCell(1, 0, null);
         ChessMove move = new ChessMove(0, 0, 6, 0, black);
-        assertTrue(ruleSet.isMoveValid(move, board, black));
+        assertTrue(ruleSet.isMoveValid(move, board));
     }
 
     @Test

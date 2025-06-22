@@ -33,8 +33,8 @@ public class TicTacToeRuleSetTest {
     @Test
     public void testFirstMove() {
         TicTacToeMove move = new TicTacToeMove(1, 1, player1);
-        assertTrue(ruleSet.isMoveValid(move, board, player1));
-        ruleSet.applyMove(move, board, player1);
+        assertTrue(ruleSet.isMoveValid(move, board));
+        ruleSet.applyMove(move, board);
         assertEquals('o', board.getCell(1, 1));
     }
 
@@ -42,8 +42,8 @@ public class TicTacToeRuleSetTest {
     public void testInvalidMove() {
         TicTacToeMove firstMove = new TicTacToeMove(0, 0, player1);
         TicTacToeMove secondMove = new TicTacToeMove(0, 0, player2);
-        ruleSet.applyMove(firstMove, board, player1);
-        assertFalse(ruleSet.isMoveValid(secondMove, board, player2));
+        ruleSet.applyMove(firstMove, board);
+        assertFalse(ruleSet.isMoveValid(secondMove, board));
     }
 
     @Test
@@ -52,9 +52,9 @@ public class TicTacToeRuleSetTest {
         TicTacToeMove secondMove = new TicTacToeMove(0, 1, player1);
         TicTacToeMove thirdMove = new TicTacToeMove(0, 2, player1);
 
-        ruleSet.applyMove(firstMove, board, player1);
-        ruleSet.applyMove(secondMove, board, player1);
-        ruleSet.applyMove(thirdMove, board, player1);
+        ruleSet.applyMove(firstMove, board);
+        ruleSet.applyMove(secondMove, board);
+        ruleSet.applyMove(thirdMove, board);
         Optional<Player> potentialWinner = ruleSet.checkWinner(board, List.of(player1, player2));
         assertTrue(potentialWinner.isPresent());
         assertEquals(player1, potentialWinner.get());
@@ -67,15 +67,15 @@ public class TicTacToeRuleSetTest {
      */
     @Test
     public void testGameDraw() {
-        ruleSet.applyMove(new TicTacToeMove(0, 0, player1), board, player1);
-        ruleSet.applyMove(new TicTacToeMove(0, 2, player2), board, player2);
-        ruleSet.applyMove(new TicTacToeMove(0, 1, player1), board, player1);
-        ruleSet.applyMove(new TicTacToeMove(1, 0, player2), board, player2);
-        ruleSet.applyMove(new TicTacToeMove(1, 1, player1), board, player1);
-        ruleSet.applyMove(new TicTacToeMove(2, 1, player2), board, player2);
-        ruleSet.applyMove(new TicTacToeMove(1, 2, player1), board, player1);
-        ruleSet.applyMove(new TicTacToeMove(2, 2, player2), board, player2);
-        ruleSet.applyMove(new TicTacToeMove(2, 0, player1), board, player1);
+        ruleSet.applyMove(new TicTacToeMove(0, 0, player1), board);
+        ruleSet.applyMove(new TicTacToeMove(0, 2, player2), board);
+        ruleSet.applyMove(new TicTacToeMove(0, 1, player1), board);
+        ruleSet.applyMove(new TicTacToeMove(1, 0, player2), board);
+        ruleSet.applyMove(new TicTacToeMove(1, 1, player1), board);
+        ruleSet.applyMove(new TicTacToeMove(2, 1, player2), board);
+        ruleSet.applyMove(new TicTacToeMove(1, 2, player1), board);
+        ruleSet.applyMove(new TicTacToeMove(2, 2, player2), board);
+        ruleSet.applyMove(new TicTacToeMove(2, 0, player1), board);
 
         assertTrue(ruleSet.isDraw(board, List.of(player1, player2)));
     }

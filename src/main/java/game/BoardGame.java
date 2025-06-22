@@ -3,7 +3,7 @@ package game;
 import java.util.List;
 import java.util.Optional;
 
-public interface Game<B, M, P> extends Exportable {
+public interface BoardGame<B, M, P> extends Exportable {
     B getBoard();
 
     List<P> getPlayers();

@@ -4,12 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import game.Game;
+import game.BoardGame;
 import game.GameStatus;
 import game.Player;
 import game.RuleSet;
 
-public class ChessGame implements Game<ChessBoard, ChessMove, Player> {
+public class ChessGame implements BoardGame<ChessBoard, ChessMove, Player> {
     private static final String GAME_TYPE = "Standard Chess";
     // private static final ObjectMapper objectMapper = new ObjectMapper();
 
@@ -84,11 +84,11 @@ public class ChessGame implements Game<ChessBoard, ChessMove, Player> {
 
     @Override
     public void makeMove(ChessMove move) {
-        if (!ruleSet.isMoveValid(move, board, currentPlayer)) {
+        if (!ruleSet.isMoveValid(move, board)) {
             throw new IllegalArgumentException("Invalid move.");
         }
 
-        ruleSet.applyMove(move, board, currentPlayer);
+        ruleSet.applyMove(move, board);
         moveList.add(move);
         currentPlayer = getNextPlayer();
         turnCount++;
@@ -109,8 +109,7 @@ public class ChessGame implements Game<ChessBoard, ChessMove, Player> {
         board.clear();
         int index = 0;
         for (ChessMove move : moveList) {
-            Player player = players.get(index % players.size());
-            ruleSet.applyMove(move, board, player);
+            ruleSet.applyMove(move, board);
             index++;
         }
     }
