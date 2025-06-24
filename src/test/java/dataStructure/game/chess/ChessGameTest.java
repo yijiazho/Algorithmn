@@ -66,7 +66,7 @@ public class ChessGameTest {
 
     @Test
     public void testReset() {
-        game.makeMove(new ChessMove(6, 0, 5, 0, black));
+        game.makeMove(new ChessMove(6, 0, 5, 0, white));
         game.reset();
 
         assertEquals(0, game.getTurnCount());

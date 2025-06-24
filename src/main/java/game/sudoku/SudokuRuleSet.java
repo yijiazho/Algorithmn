@@ -68,13 +68,12 @@ public class SudokuRuleSet implements RuleSet<SudokuBoard, SudokuMove, Player> {
 
     private boolean isBoardSolvable(SudokuBoard board, Set<SudokuBoard> invalidBoardSet) {
         boolean isBoardFull = true;
+        // try all valid moves for i, j, value
         for (int i = 0; i < SudokuBoard.REGULAR_SIZE; i++) {
             for (int j = 0; j < SudokuBoard.REGULAR_SIZE; j++) {
                 if (board.getBoardValue(i, j) == 0) {
                     isBoardFull = false;
-                    // try all possible moves
                     for (int value = 1; value <= SudokuBoard.REGULAR_SIZE; value++) {
-
                         SudokuMove move = new SudokuMove(null, i, j, value);
                         if (isMoveValid(move, board)) {
                             applyMove(move, board);
@@ -82,8 +81,6 @@ public class SudokuRuleSet implements RuleSet<SudokuBoard, SudokuMove, Player> {
                                 boolean result = isBoardSolvable(board);
                                 if (result) {
                                     return true;
-                                } else {
-                                    invalidBoardSet.add(board);
                                 }
                             }
                             undoMove(move, board);
@@ -93,7 +90,12 @@ public class SudokuRuleSet implements RuleSet<SudokuBoard, SudokuMove, Player> {
             }
         }
 
-        return isBoardFull;
+        if (isBoardFull) {
+            return true;
+        } else {
+            invalidBoardSet.add(board);
+            return false;
+        }
     }
 
     private boolean validateMoveInRow(SudokuMove move, SudokuBoard board) {
