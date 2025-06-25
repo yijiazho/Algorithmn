@@ -1,6 +1,8 @@
 package linear;
 
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Median {
 
@@ -180,12 +182,72 @@ public class Median {
         return count;
     }
 
-    public static final void main(String[] args) {
-        int[] n1 = new int[] { 1, 2, 3, 7, 9 };
-        int[] n2 = new int[] { 3, 4 };
+    public int countFromMedian(int[] nums, int k) {
 
-        Median median = new Median();
-        double res = median.findMedian(n1, n2);
-        System.out.println(res);
+        // ALternatively, we can count in the middle from k
+        // for left side, count how many numbers are smaller than k
+        // from current index to kIndex, inclusively
+        // for right side, count how many numbers are larger than k
+        // from kIndex to current index, inclusively
+        int kIndex = -1;
+        for (int i = 0; i < nums.length; i++) {
+            if (nums[i] == k) {
+                kIndex = i;
+                break;
+            }
+        }
+
+        // key is the difference between larger and smaller numbers, from kIndex to
+        // current index
+        // or from current index to kIndex
+        // value is the number of such pairs with the same difference
+        Map<Integer, Integer> differenceFrequencyLeft = new HashMap<>();
+        Map<Integer, Integer> differenceFrequencyRight = new HashMap<>();
+
+        int differenceBetweenLargerAndSmaller = 0;
+        // for kIndex, we have 0 difference, kIndex can be the left boundary or right
+        // boundary
+        differenceFrequencyLeft.put(0, 1);
+        for (int i = kIndex - 1; i >= 0; i--) {
+            if (nums[i] < k) {
+                differenceBetweenLargerAndSmaller--;
+            } else {
+                differenceBetweenLargerAndSmaller++;
+            }
+            differenceFrequencyLeft.put(differenceBetweenLargerAndSmaller,
+                    differenceFrequencyLeft.getOrDefault(differenceBetweenLargerAndSmaller, 0) + 1);
+        }
+
+        differenceBetweenLargerAndSmaller = 0;
+        differenceFrequencyRight.put(0, 1);
+        for (int i = kIndex + 1; i < nums.length; i++) {
+            if (nums[i] < k) {
+                differenceBetweenLargerAndSmaller--;
+            } else {
+                differenceBetweenLargerAndSmaller++;
+            }
+            differenceFrequencyRight.put(differenceBetweenLargerAndSmaller,
+                    differenceFrequencyRight.getOrDefault(differenceBetweenLargerAndSmaller, 0) + 1);
+        }
+
+        // Now let's loop the map entry set
+        // if we have a difference of -1, whose frequency is a,
+        // then we can find a pair with difference of 1, whose frequency is b,
+        // then we can form a subarray with median k, a * b times
+        int count = 0;
+
+        for (Map.Entry<Integer, Integer> entry : differenceFrequencyLeft.entrySet()) {
+            int difference = entry.getKey();
+            int frequency = entry.getValue();
+
+            if (differenceFrequencyRight.containsKey(-difference)) {
+                count += frequency * differenceFrequencyRight.get(-difference);
+            }
+            if (differenceFrequencyRight.containsKey(-difference + 1)) {
+                count += frequency * differenceFrequencyRight.get(-difference + 1);
+            }
+        }
+
+        return count;
     }
 }

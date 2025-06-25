@@ -1,11 +1,17 @@
 package linear;
 
+import java.util.Random;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import utility.TimeComplexityAnalyzer;
+import utility.TimeComplexityAnalyzer.Complexity;
+
 public class SortTest {
-    
+
     private Sort sort;
 
     @BeforeEach
@@ -15,30 +21,48 @@ public class SortTest {
 
     @Test
     public void testQuickSort() {
-        int[] array = new int[] {3, 6, 1, 7, -9, 0};
+        int[] array = new int[] { 3, 6, 1, 7, -9, 0 };
         sort.sort(array, SortMethod.QUICKSORT);
         assertTrue(isArrayincreasing(array));
     }
 
     @Test
     public void testMergeSort() {
-        int[] array = new int[] {3, 6, 1, 7, -9, 0};
+        int[] array = new int[] { 3, 6, 1, 7, -9, 0 };
         sort.sort(array, SortMethod.MERGESORT);
         assertTrue(isArrayincreasing(array));
     }
 
     @Test
     public void testQuickSortDecreasing() {
-        int[] array = new int[] {Integer.MAX_VALUE, 9, 1, 0, -1, Integer.MIN_VALUE};
+        int[] array = new int[] { Integer.MAX_VALUE, 9, 1, 0, -1, Integer.MIN_VALUE };
         sort.sort(array, SortMethod.QUICKSORT);
         assertTrue(isArrayincreasing(array));
     }
 
     @Test
     public void testMergeSortDecreasing() {
-        int[] array = new int[] {Integer.MAX_VALUE, 9, 1, 0, -1, Integer.MIN_VALUE};
+        int[] array = new int[] { Integer.MAX_VALUE, 9, 1, 0, -1, Integer.MIN_VALUE };
         sort.sort(array, SortMethod.MERGESORT);
         assertTrue(isArrayincreasing(array));
+    }
+
+    @Test
+    public void testQuickSortComplexity() {
+        Complexity complexity = TimeComplexityAnalyzer.analyze(n -> {
+            int[] data = generateRandomArray(n);
+            sort.sort(data, SortMethod.QUICKSORT);
+        }, 100, 100000, 500);
+        assertEquals(Complexity.N_LOG_N, complexity);
+    }
+
+    @Test
+    public void testMergeSortComplexity() {
+        Complexity complexity = TimeComplexityAnalyzer.analyze(n -> {
+            int[] data = generateRandomArray(n);
+            sort.sort(data, SortMethod.MERGESORT);
+        }, 100, 100000, 500);
+        assertEquals(Complexity.N_LOG_N, complexity);
     }
 
     private boolean isArrayincreasing(int[] array) {
@@ -52,5 +76,14 @@ public class SortTest {
             }
         }
         return true;
+    }
+
+    private int[] generateRandomArray(int n) {
+        Random rand = new Random(42);
+        int[] arr = new int[n];
+        for (int i = 0; i < n; i++) {
+            arr[i] = rand.nextInt();
+        }
+        return arr;
     }
 }
