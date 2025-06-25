@@ -1,9 +1,13 @@
 package linear;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
+
 public class Subsequence {
-    // return longest increasing subsequence
-    public List<Integer> LIS(int[] nums) {
+    // return one longest increasing subsequence
+    public List<Integer> longestIncreasingSubsequence(int[] nums) {
         if (nums == null || nums.length == 0) {
             return null;
         }
@@ -50,8 +54,7 @@ public class Subsequence {
         return list;
     }
 
-
-    public int findNumberOfLIS(int[] nums) {
+    public int findNumberOfLongestIncreasingSubsequence(int[] nums) {
         int l = nums.length;
         // length of LIS end in position i
         int[] length = new int[l];
@@ -87,13 +90,25 @@ public class Subsequence {
         return res;
     }
 
+    public int longestCommonSubsequence(String a, String b) {
+        int m = a.length();
+        int n = b.length();
 
+        // l[i][j] means the length of longest subsequencce from
+        // a.substring(0, i) and b.substring(0, j), while both
+        // a[i - 1] and b[j - 1] are not necessaruly included
+        int[][] longestSubsequence = new int[m + 1][n + 1];
 
-    public static final void main(String[] args) {
-        Subsequence instance = new Subsequence();
-        int[] input = new int[]{2,5,1,5,7,2,41,7,41};
-        int res = instance.findNumberOfLIS(input);
-
-        System.out.println(res);
+        for (int i = 1; i <= m; i++) {
+            for (int j = 1; j <= n; j++) {
+                if (a.charAt(i - 1) == b.charAt(j - 1)) {
+                    longestSubsequence[i][j] = longestSubsequence[i - 1][j - 1] + 1;
+                } else {
+                    longestSubsequence[i][j] = Math.max(longestSubsequence[i - 1][j], longestSubsequence[i][j - 1]);
+                }
+            }
+        }
+        // can be improved by m * 2
+        return longestSubsequence[m][n];
     }
 }
