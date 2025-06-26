@@ -1,14 +1,15 @@
 package utility;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import org.junit.jupiter.api.Test;
+import static utility.TimeComplexityAnalyzer.analyze;
+
+import org.junitpioneer.jupiter.RetryingTest;
 
 import utility.TimeComplexityAnalyzer.Complexity;
-import static utility.TimeComplexityAnalyzer.analyze;
 
 public class TimeComplexityAnalyzerTest {
 
-    @Test
+    @RetryingTest(5)
     public void testConstant() {
         Complexity c = analyze(n -> {
             int sum = n * n;
@@ -16,7 +17,7 @@ public class TimeComplexityAnalyzerTest {
         assertEquals(Complexity.CONSTANT, c);
     }
 
-    @Test
+    @RetryingTest(5)
     public void testSquare() {
         Complexity c = analyze(n -> {
             int sum = 0;

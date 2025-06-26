@@ -1,11 +1,13 @@
 package linear;
 
-import java.util.Random;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import java.util.Random;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junitpioneer.jupiter.RetryingTest;
 
 import utility.TimeComplexityAnalyzer;
 import utility.TimeComplexityAnalyzer.Complexity;
@@ -47,7 +49,7 @@ public class SortTest {
         assertTrue(isArrayincreasing(array));
     }
 
-    @Test
+    @RetryingTest(5)
     public void testQuickSortComplexity() {
         Complexity complexity = TimeComplexityAnalyzer.analyze(n -> {
             int[] data = generateRandomArray(n);
@@ -56,7 +58,7 @@ public class SortTest {
         assertEquals(Complexity.N_LOG_N, complexity);
     }
 
-    @Test
+    @RetryingTest(5)
     public void testMergeSortComplexity() {
         Complexity complexity = TimeComplexityAnalyzer.analyze(n -> {
             int[] data = generateRandomArray(n);

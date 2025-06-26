@@ -1,6 +1,8 @@
 package tree;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.TreeSet;
 
 class Point {
     int x;
@@ -17,9 +19,15 @@ class Point {
     }
 }
 
-// lc 699
 public class FallingSquares {
 
+    /**
+     * Find the height of tallest stack after a list of bricks are falling, one at
+     * at time
+     * 
+     * @param positions an array of [leftBoundaryPostion, squareLength]
+     * @return a list of tallest height of current condition
+     */
     public List<Integer> fallingSquares(int[][] positions) {
         List<Integer> res = new ArrayList<>();
         int max = 0;
@@ -46,7 +54,7 @@ public class FallingSquares {
             Point cur = leftPoint;
             while (true) {
                 cur = treeSet.higher(cur);
-                if (cur == null){
+                if (cur == null) {
                     break;
                 }
 
@@ -80,10 +88,9 @@ public class FallingSquares {
         return res;
     }
 
-
     public static final void main(String[] args) {
         FallingSquares instance = new FallingSquares();
-        int[][] squares = new int[][]{{1, 5},{2, 2},{7, 5}};
+        int[][] squares = new int[][] { { 1, 5 }, { 2, 2 }, { 7, 5 } };
 
         List<Integer> res = instance.fallingSquares(squares);
         System.out.println(res);
