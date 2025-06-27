@@ -111,4 +111,73 @@ public class Subsequence {
         // can be improved by m * 2
         return longestSubsequence[m][n];
     }
+
+    /**
+     * Find if there exist i, j, k in n array, where i < j < k and n[i] < n[j] <
+     * n[k]
+     * 
+     * @param n integer array, must be non empty
+     * @return if the i, j, k triplet exist
+     */
+    public boolean increasingTriplet(int[] n) {
+        // this is a special case of longest icreasing subsequence, which
+        // can be solved in O(N log M), M is the length of subsequence.
+        // In this case M = 3
+        int len = n.length;
+        if (len < 3) {
+            return false;
+        }
+
+        int min = Integer.MAX_VALUE;
+        int secondMin = Integer.MAX_VALUE;
+
+        for (int i = 0; i < len; i++) {
+            if (n[i] <= min) {
+                min = n[i];
+            } else if (n[i] <= secondMin) {
+                secondMin = n[i];
+            } else {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Find the length of the longest palindrome subsequence
+     * 
+     * @param s orginal string, must be non empty
+     * @return the length of longest palindrome subsequence
+     */
+    public int longestPalindromeSubsequence(String s) {
+        int l = s.length();
+
+        // array[i][j] = k means from s[i] to s[j], longest increasing subsequence
+        // length is k, boundary inclusive, but not necessarily included in subsequence
+        int[][] longestPalindromeSubsequence = new int[l][l];
+
+        for (int i = 0; i < l; i++) {
+            longestPalindromeSubsequence[i][i] = 1;
+        }
+
+        for (int i = l - 1; i >= 0; i--) {
+            for (int j = i + 1; j < l; j++) {
+                if (i + 1 == j) {
+                    longestPalindromeSubsequence[i][j] = s.charAt(i) == s.charAt(j) ? 2 : 1;
+                } else {
+                    if (s.charAt(i) == s.charAt(j)) {
+                        longestPalindromeSubsequence[i][j] = Math.max(longestPalindromeSubsequence[i][j],
+                                longestPalindromeSubsequence[i + 1][j - 1] + 2);
+                    } else {
+                        longestPalindromeSubsequence[i][j] = Math.max(longestPalindromeSubsequence[i + 1][j],
+                                longestPalindromeSubsequence[i][j - 1]);
+                    }
+                }
+            }
+        }
+
+        return longestPalindromeSubsequence[0][l - 1];
+    }
+
 }

@@ -1,11 +1,15 @@
 package linear;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
 import java.util.List;
+import java.util.Random;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junitpioneer.jupiter.RetryingTest;
+
+import utility.TimeComplexityAnalyzer;
+import utility.TimeComplexityAnalyzer.Complexity;
 
 public class SubsequenceTest {
 
@@ -61,5 +65,52 @@ public class SubsequenceTest {
 
         int result = subsequence.longestCommonSubsequence(string1, string2);
         assertEquals(4, result);
+    }
+
+    @Test
+    public void testIncreasingTriplet() {
+        int[] array = new int[] { 9, 10, 5, 4, 3, 2, 1, 1, 2, -1, 4 };
+        boolean result = subsequence.increasingTriplet(array);
+        assertEquals(true, result);
+    }
+
+    @Test
+    public void testIncreasingTripletDuplicate() {
+        int[] array = new int[] { 1, 1, 1, 1, -2, 10 };
+        boolean result = subsequence.increasingTriplet(array);
+        assertEquals(false, result);
+    }
+
+    @Test
+    public void testLongesPalindromeSubsequence() {
+        String s = "bbbab";
+        int result = subsequence.longestPalindromeSubsequence(s);
+    }
+
+    @RetryingTest(3)
+    public void testLongestIncreasingSubsequenceComplexity() {
+        Complexity complexity = TimeComplexityAnalyzer.analyze(n -> {
+            int[] data = generateRandomArray(n);
+            subsequence.longestIncreasingSubsequence(data);
+        }, 100, 100000, 500);
+        assertEquals(Complexity.N_LOG_N, complexity);
+    }
+
+    @RetryingTest(3)
+    public void testIncreasingTripletComplexity() {
+        Complexity complexity = TimeComplexityAnalyzer.analyze(n -> {
+            int[] data = generateRandomArray(n);
+            subsequence.increasingTriplet(data);
+        }, 100, 100000, 500);
+        assertEquals(Complexity.N, complexity);
+    }
+
+    private int[] generateRandomArray(int n) {
+        Random rand = new Random(42);
+        int[] arr = new int[n];
+        for (int i = 0; i < n; i++) {
+            arr[i] = rand.nextInt();
+        }
+        return arr;
     }
 }
