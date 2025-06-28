@@ -1,9 +1,10 @@
 package linear;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import java.util.List;
 import java.util.Random;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junitpioneer.jupiter.RetryingTest;
@@ -85,6 +86,65 @@ public class SubsequenceTest {
     public void testLongesPalindromeSubsequence() {
         String s = "bbbab";
         int result = subsequence.longestPalindromeSubsequence(s);
+        assertEquals(4, result);
+    }
+
+    @Test
+    public void testMinWindow() {
+        String s1 = "ggez";
+        String s2 = "ggz";
+
+        String result = subsequence.minWindow(s1, s2);
+        String expected = "ggez";
+        assertEquals(expected, result);
+    }
+
+    @Test
+    public void testMinWindowNoMatch() {
+        String s1 = "abcdefghijklmn";
+        String s2 = "xyz";
+
+        String result = subsequence.minWindow(s1, s2);
+        String expected = "";
+        assertEquals(expected, result);
+    }
+
+    @Test
+    public void testMinWindowDuplicate() {
+        String s1 = "xx";
+        String s2 = "xx";
+
+        String result = subsequence.minWindow(s1, s2);
+        String expected = "xx";
+        assertEquals(expected, result);
+    }
+
+    @Test
+    public void findLongestUncommonSubsequenceUnique() {
+        String[] input = new String[] { "abcd", "efg", "hijkl" };
+        int result = subsequence.longestUncommonSubsequence(input);
+        assertEquals(5, result);
+    }
+
+    @Test
+    public void findLongestUncommonSubsequenceSame() {
+        String[] input = new String[] { "aaaa", "aaaa", "aaa" };
+        int result = subsequence.longestUncommonSubsequence(input);
+        assertEquals(-1, result);
+    }
+
+    @Test
+    public void findLongestUncommonSubsequence() {
+        String[] input = new String[] { "aabbcc", "aabbcc", "cb" };
+        int result = subsequence.longestUncommonSubsequence(input);
+        assertEquals(2, result);
+    }
+
+    @Test
+    public void findLongestUncommonSubsequenceSingleCharacter() {
+        String[] input = new String[] { "z", "h", "o", "u", "u", "o", "h", "z" };
+        int result = subsequence.longestUncommonSubsequence(input);
+        assertEquals(-1, result);
     }
 
     @RetryingTest(3)
