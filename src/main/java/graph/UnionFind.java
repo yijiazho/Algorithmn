@@ -2,21 +2,17 @@ package graph;
 
 public class UnionFind {
 
-    private V[] vertices;
+    private final Vertex[] vertices;
 
     public UnionFind(int n) {
-        vertices = new V[n];
+        vertices = new Vertex[n];
         for (int i = 0; i < n; i++) {
-            vertices[i] = new V(i);
+            vertices[i] = new Vertex(i);
         }
     }
 
-    public V get(int id) {
-        return vertices[id];
-    }
-
-    public V root(V p) {
-        V cur = p;
+    private Vertex root(Vertex p) {
+        Vertex cur = p;
         while (cur.parent != cur) {
             cur.parent = cur.parent.parent;
             cur = cur.parent;
@@ -26,13 +22,17 @@ public class UnionFind {
         return cur;
     }
 
-    public boolean find(V p, V q) {
+    public boolean find(int pIndex, int qIndex) {
+        Vertex p = vertices[pIndex];
+        Vertex q = vertices[qIndex];
         return root(p).equals(root(q));
     }
 
-    public void union(V p, V q) {
-        V rootP = root(p);
-        V rootQ = root(q);
+    public void union(int pIndex, int qIndex) {
+        Vertex p = vertices[pIndex];
+        Vertex q = vertices[qIndex];
+        Vertex rootP = root(p);
+        Vertex rootQ = root(q);
         if (rootP.size > rootQ.size) {
             rootQ.parent = rootP;
             rootP.size += rootQ.size;
@@ -42,12 +42,12 @@ public class UnionFind {
         }
     }
 
-    class V {
+    class Vertex {
         int id;
-        V parent;
+        Vertex parent;
         int size;
 
-        public V(int id) {
+        public Vertex(int id) {
             this.id = id;
             size = 1;
             parent = this;
@@ -55,10 +55,10 @@ public class UnionFind {
 
         @Override
         public boolean equals(Object o) {
-            if (!(o instanceof V)) {
+            if (!(o instanceof Vertex)) {
                 return false;
             }
-            V that = (V) o;
+            Vertex that = (Vertex) o;
             return this.id == that.id;
         }
 

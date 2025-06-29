@@ -49,7 +49,7 @@ public class SortTest {
         assertTrue(isArrayincreasing(array));
     }
 
-    @RetryingTest(5)
+    @RetryingTest(3)
     public void testQuickSortComplexity() {
         Complexity complexity = TimeComplexityAnalyzer.analyze(n -> {
             int[] data = generateRandomArray(n);
@@ -58,7 +58,7 @@ public class SortTest {
         assertEquals(Complexity.N_LOG_N, complexity);
     }
 
-    @RetryingTest(5)
+    @RetryingTest(3)
     public void testMergeSortComplexity() {
         Complexity complexity = TimeComplexityAnalyzer.analyze(n -> {
             int[] data = generateRandomArray(n);

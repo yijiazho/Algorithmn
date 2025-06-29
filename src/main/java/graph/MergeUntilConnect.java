@@ -58,8 +58,8 @@ public class MergeUntilConnect {
                     int newCol = col + dir[1];
                     if (newRow >= 0 && newRow < n && newCol >= 0 && newCol < n
                             && visited.contains(newRow * n + newCol)) {
-                        if (!uf.find(uf.get(row * n + col), uf.get(newRow * n + newCol))) {
-                            uf.union(uf.get(row * n + col), uf.get(newRow * n + newCol));
+                        if (!uf.find(row * n + col, newRow * n + newCol)) {
+                            uf.union(row * n + col, newRow * n + newCol);
                             totalSize--;
                         }
                     }
