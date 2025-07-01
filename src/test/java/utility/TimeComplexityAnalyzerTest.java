@@ -9,7 +9,7 @@ import utility.TimeComplexityAnalyzer.Complexity;
 
 public class TimeComplexityAnalyzerTest {
 
-    @RetryingTest(5)
+    @RetryingTest(3)
     public void testConstant() {
         Complexity c = analyze(n -> {
             int sum = n * n;
@@ -17,7 +17,7 @@ public class TimeComplexityAnalyzerTest {
         assertEquals(Complexity.CONSTANT, c);
     }
 
-    @RetryingTest(5)
+    @RetryingTest(3)
     public void testSquare() {
         Complexity c = analyze(n -> {
             int sum = 0;

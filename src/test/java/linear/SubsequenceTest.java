@@ -1,9 +1,9 @@
 package linear;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static utility.TestUtil.generateRandomArray;
 
 import java.util.List;
-import java.util.Random;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -163,14 +163,5 @@ public class SubsequenceTest {
             subsequence.increasingTriplet(data);
         }, 100, 100000, 500);
         assertEquals(Complexity.N, complexity);
-    }
-
-    private int[] generateRandomArray(int n) {
-        Random rand = new Random(42);
-        int[] arr = new int[n];
-        for (int i = 0; i < n; i++) {
-            arr[i] = rand.nextInt();
-        }
-        return arr;
     }
 }

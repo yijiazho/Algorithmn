@@ -1,6 +1,6 @@
 package dataStructure.cache;
 
-public interface Client<K, V> {
+public interface Cache<K, V> {
     V getById(K key);
 
     boolean insert(K key, V value);
