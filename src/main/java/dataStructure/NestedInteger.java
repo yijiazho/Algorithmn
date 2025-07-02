@@ -6,20 +6,38 @@ public interface NestedInteger {
     // If we want to force the constructor, we can use either abstract class
     // or a factory for interface
 
-    // @return true if this NestedInteger holds a single integer, rather than a nested list.
-    public boolean isInteger();
+    /**
+     * If the NestedInteger holds a single integer, rather than a nested list
+     * 
+     * @return true if it's integer, false if it's list
+     */
+    boolean isInteger();
 
-    // @return the single integer that this NestedInteger holds, if it holds a single integer
-    // Return null if this NestedInteger holds a nested list
-    public Integer getInteger();
+    /**
+     * Returns the held integer it holds, if it's a list return null
+     * 
+     * @return the held integer
+     */
+    Integer getInteger();
 
-    // Set this NestedInteger to hold a single integer.
-    public void setInteger(int value);
+    /**
+     * Set the integer to hold a single integer
+     * 
+     * @param value
+     */
+    void setInteger(int value);
 
-    // Set this NestedInteger to hold a nested list and adds a nested integer to it.
-    public void add(NestedInteger ni);
+    /**
+     * Add a nested list to this NestedInteger
+     * 
+     * @param ni
+     */
+    void add(NestedInteger ni);
 
-    // @return the nested list that this NestedInteger holds, if it holds a nested list
-    // Return empty list if this NestedInteger holds a single integer
-    public List<NestedInteger> getList();
+    /**
+     * get the list of NestedIntegers if it holds a list, otherwise return null
+     * 
+     * @return
+     */
+    List<NestedInteger> getList();
 }
