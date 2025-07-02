@@ -50,19 +50,22 @@ public class Interval {
         // before overlapping
         while (i < l && intervals[i][1] < newInterval[0]) {
             list.add(intervals[i]);
+            i++;
         }
 
         int[] merged = new int[] { newInterval[0], newInterval[1] };
         // overlapping
-        while (i < l && intervals[i][0] <= newInterval[0]) {
-            merged[0] = Math.min(intervals[i][0], newInterval[0]);
-            merged[1] = Math.min(intervals[i][1], newInterval[1]);
+        while (i < l && intervals[i][0] <= newInterval[1]) {
+            merged[0] = Math.min(intervals[i][0], merged[0]);
+            merged[1] = Math.max(intervals[i][1], merged[1]);
+            i++;
         }
         list.add(merged);
 
         // after overlapping
         while (i < l) {
             list.add(intervals[i]);
+            i++;
         }
 
         int[][] result = new int[list.size()][2];
