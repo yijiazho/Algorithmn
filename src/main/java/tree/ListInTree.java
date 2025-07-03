@@ -1,7 +1,6 @@
 package tree;
 
 import utility.ListNode;
-import utility.TreeNode;
 
 public class ListInTree {
 

@@ -1,7 +1,5 @@
 package tree;
 
-import utility.TreeNode;
-
 public class CountNodes {
     private int totalNodes;
 

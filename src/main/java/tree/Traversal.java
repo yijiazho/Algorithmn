@@ -1,7 +1,5 @@
 package tree;
 
-import utility.TreeNode;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -17,7 +15,7 @@ public class Traversal {
     }
 
     private TreeNode build(int[] inorder, int inStart, int inEnd,
-                           int[] postorder, int postStart, int postEnd, Map<Integer, Integer> map) {
+            int[] postorder, int postStart, int postEnd, Map<Integer, Integer> map) {
 
         if (inStart > inEnd || postStart > postEnd) {
             return null;
