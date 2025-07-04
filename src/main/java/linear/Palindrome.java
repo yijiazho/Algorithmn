@@ -110,6 +110,15 @@ public class Palindrome {
         return palindromeWithMinCost(nums[l / 2], nums);
     }
 
+    /**
+     * Find out the minimum cost to make an integer to a palindrome integer, the
+     * cost is defined by the sum of absolute difference between the palindrome
+     * number and the number in the integer array
+     * 
+     * @param n    original integer to make it palindrome
+     * @param nums the cost to calculate based on
+     * @return total cost based on the nums array
+     */
     public long palindromeWithMinCost(int n, int[] nums) {
 
         if (isPalindrome(n)) {
@@ -133,6 +142,50 @@ public class Palindrome {
         }
 
         return Math.min(sum1, sum2);
+    }
+
+    /**
+     * Find out if a string can be palindrome by removing at most k characters
+     * 
+     * @param s original string, non empty, with lower cases only
+     * @param k integer, which is no larger than the string length
+     * @return if the string can be palindrome
+     */
+    public boolean isValidPalindrome(String s, int k) {
+        int l = s.length();
+        // isPalin[i][j][p] = true/false means if
+        // s.substring(i, j + 1) can or cannot be palindrome
+        // after removing exact k characters
+        boolean[][][] isPalindrome = new boolean[l][l][k + 1];
+
+        for (int i = 0; i < l; i++) {
+            isPalindrome[i][i][0] = true;
+            if (i < l - 1 && s.charAt(i) == s.charAt(i + 1)) {
+                isPalindrome[i][i + 1][0] = true;
+            }
+        }
+
+        for (int p = 0; p <= k; p++) {
+            for (int i = l - 1; i >= 0; i--) {
+                for (int j = i + 1; j < l; j++) {
+                    if (s.charAt(i) == s.charAt(j)) {
+                        isPalindrome[i][j][p] = isPalindrome[i][j][p] || isPalindrome[i + 1][j - 1][p];
+                    } else if (p > 0) {
+                        isPalindrome[i][j][p] = isPalindrome[i][j][p] || isPalindrome[i + 1][j][p - 1]
+                                || isPalindrome[i][j - 1][p - 1];
+                    }
+                }
+            }
+        }
+
+        for (int p = 0; p <= k; p++) {
+            if (isPalindrome[0][l - 1][p]) {
+                return true;
+            }
+        }
+        return false;
+
+        // alternatively, we can use Subsequence.longestPalindromeSubsequence()
     }
 
     private boolean isPalindrome(int n) {

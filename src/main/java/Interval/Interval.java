@@ -75,6 +75,48 @@ public class Interval {
         return result;
     }
 
+    public int[][] intervalInsersection(int[][] firstList, int[][] secondList) {
+        if (firstList.length == 0 || secondList.length == 0) {
+            return new int[0][];
+        }
+
+        List<int[]> resultList = new ArrayList<>();
+
+        int i = 0;
+        int j = 0;
+
+        while (i < firstList.length && j < secondList.length) {
+            int[] A = firstList[i];
+            int[] B = secondList[j];
+
+            if (overlap(A, B)) {
+                resultList.add(new int[] { Math.max(A[0], B[0]), Math.min(A[1], B[1]) });
+
+                // remove the event ends first
+                if (A[1] == B[1]) {
+                    i++;
+                    j++;
+                } else if (A[1] < B[1]) {
+                    i++;
+                } else {
+                    j++;
+                }
+            } else {
+                if (A[1] < B[0]) {
+                    i++;
+                } else {
+                    j++;
+                }
+            }
+        }
+
+        int[][] result = new int[resultList.size()][2];
+        for (int k = 0; k < resultList.size(); k++) {
+            result[k] = resultList.get(k);
+        }
+        return result;
+    }
+
     private boolean overlap(int[] interval1, int[] interval2) {
         return !(interval1[1] < interval2[0] || interval2[1] < interval1[0]);
     }

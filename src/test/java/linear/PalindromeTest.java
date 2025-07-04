@@ -1,7 +1,6 @@
 package linear;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -26,5 +25,12 @@ public class PalindromeTest {
         String s = "ifill";
         String result = palindrome.shortestPalindrome(s);
         assertEquals("llifill", result);
+    }
+
+    @Test
+    public void testValidPalindrome() {
+        String s = "abcddeca";
+        boolean result = palindrome.isValidPalindrome(s, 2);
+        assertEquals(true, result);
     }
 }

@@ -20,6 +20,20 @@ class SegmentTreeNode {
 
 public class SegmentTree {
 
+    /**
+     * Given an string s, and another string queryCharacters of length k and array
+     * of indicies of length k. So we have k queries. Each query[i] updates the
+     * character in the original string s, of queryIndicies[i], to character
+     * queryCharacters[i]. Find out the length of longest substring in original
+     * string s, consisting only one repeating characters, after each single query
+     * 
+     * @param s               original string, non empty
+     * @param queryCharacters string of length k, representing the character to
+     *                        update to in the ith query
+     * @param queryIndices    array of length k, representing the index to update in
+     *                        the ith query
+     * @return the length of longest substring, after each query
+     */
     public int[] longestRepeating(String s, String queryCharacters, int[] queryIndices) {
         char[] chars = s.toCharArray();
         int n = queryIndices.length;
