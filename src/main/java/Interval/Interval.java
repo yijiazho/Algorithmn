@@ -2,6 +2,7 @@ package interval;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -120,4 +121,58 @@ public class Interval {
     private boolean overlap(int[] interval1, int[] interval2) {
         return !(interval1[1] < interval2[0] || interval2[1] < interval1[0]);
     }
+
+    public List<int[]> mergeIntervals(int[][] intervals) {
+        List<Event> events = new ArrayList<>();
+
+        for (int[] interval : intervals) {
+            events.add(new Event(interval[0], EventType.START));
+            events.add(new Event(interval[1], EventType.END));
+        }
+
+        // sort all events by time, if tie, START goes before END
+        Collections.sort(events);
+
+        List<int[]> result = new ArrayList<>();
+        int count = 0;
+        int start = 0;
+
+        for (Event event : events) {
+            if (event.type == EventType.START) {
+                if (count == 0) {
+                    start = event.time;
+                }
+                count++;
+            } else {
+                count--;
+                if (count == 0) {
+                    result.add(new int[] { start, event.time });
+                }
+            }
+        }
+
+        return result;
+    }
+}
+
+class Event implements Comparable<Event> {
+    int time;
+    EventType type;
+
+    public Event(int time, EventType type) {
+        this.time = time;
+        this.type = type;
+    }
+
+    @Override
+    public int compareTo(Event other) {
+        if (this.time != other.time) {
+            return this.time - other.time;
+        }
+        return this.type.ordinal() - other.type.ordinal();
+    }
+}
+
+enum EventType {
+    START, END
 }
