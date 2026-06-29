@@ -39,6 +39,6 @@ public class AtomExpr implements Expr {
 
     @Override
     public String expr() {
-        return null;
+        return value;
     }
 }
