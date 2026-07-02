@@ -2,8 +2,11 @@ package search;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 public class Combinations {
@@ -115,5 +118,102 @@ public class Combinations {
         }
 
         return possibleCombos[target];
+    }
+
+    /**
+     * Find out all the subset sums from original array
+     * 
+     * @param nums non empty integer array
+     * @return an array of all subset sums
+     */
+    public int[] subsetSums(int[] nums) {
+        List<Integer> result = new ArrayList<>();
+        traverse(result, 0, nums, 0);
+        int[] array = new int[result.size()];
+        for (int i = 0; i < array.length; i++) {
+            array[i] = result.get(i);
+        }
+        return array;
+    }
+
+    private void traverse(List<Integer> result, int sum, int[] nums, int index) {
+        int l = nums.length;
+        if (index > l) {
+            return;
+        }
+
+        for (int i = index; i < l; i++) {
+            traverse(result, sum + nums[i], nums, i + 1);
+        }
+        result.add(sum);
+    }
+
+    /**
+     * Recover an original integer array from the subset array
+     * 
+     * @param subsetSums subset sum array
+     * @param n          length of original array
+     * @return one possible original array
+     */
+    public int[] recoverArray(int[] subsetSums, int n) {
+        List<Integer> list = new ArrayList<>();
+        for (int sum : subsetSums) {
+            list.add(sum);
+        }
+        Collections.sort(list);
+        List<Integer> result = reconstructFromSubsetSums(list, n);
+        int[] array = new int[n];
+        for (int i = 0; i < n; i++) {
+            array[i] = result.get(i);
+        }
+        return array;
+    }
+
+    private List<Integer> reconstructFromSubsetSums(List<Integer> subsetSums, int n) {
+        if (n == 1) {
+            if (!subsetSums.contains(0)) {
+                return null;
+            }
+            List<Integer> result = new ArrayList<>();
+            result.add(subsetSums.get(0) == 0 ? subsetSums.get(1) : subsetSums.get(0));
+            return result;
+        }
+
+        // subsetSum(0) is 0 for empty subset, find the first non zero difference
+        int x = subsetSums.get(1) - subsetSums.get(0);
+
+        // try x and -x
+        for (int sign : new int[] { 1, -1 }) {
+            int candidate = x * sign;
+            boolean containsZero = false;
+            Map<Integer, Integer> sumFrequency = new HashMap<>();
+            for (int sum : subsetSums) {
+                sumFrequency.put(sum, sumFrequency.getOrDefault(sum, 0) + 1);
+            }
+
+            // List<Integer> listWithSmallestElement = new ArrayList<>();
+            List<Integer> listWithoutSmallestElement = new ArrayList<>();
+
+            for (int sum : subsetSums) {
+                if (sumFrequency.get(sum) != 0 && sumFrequency.getOrDefault(sum + candidate, 0) != 0) {
+
+                    sumFrequency.put(sum, sumFrequency.get(sum) - 1);
+                    sumFrequency.put(sum + candidate, sumFrequency.get(sum + candidate) - 1);
+                    // listWithSmallestElement.add(sum + candidate);
+                    listWithoutSmallestElement.add(sum);
+                    if (sum == 0) {
+                        containsZero = true;
+                    }
+                }
+            }
+
+            if (containsZero) {
+                List<Integer> result = reconstructFromSubsetSums(listWithoutSmallestElement, n - 1);
+                result.add(candidate);
+                return result;
+            }
+        }
+
+        return null;
     }
 }

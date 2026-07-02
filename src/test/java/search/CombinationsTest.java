@@ -1,9 +1,11 @@
 package search;
 
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -66,5 +68,63 @@ public class CombinationsTest {
         int result = combination.combinations(nums, 20);
 
         assertEquals(7, result);
+    }
+
+    @Test
+    public void testSubsetSum() {
+        int[] nums = new int[] { 1, 3, 5 };
+        int[] result = combination.subsetSums(nums);
+        int[] expected = new int[] { 0, 1, 3, 5, 4, 6, 8, 9 };
+        Arrays.sort(result);
+        Arrays.sort(expected);
+
+        assertArrayEquals(expected, result);
+        int[] originalArray = combination.recoverArray(result, 3);
+        Arrays.sort(originalArray);
+        Arrays.sort(nums);
+        assertArrayEquals(nums, originalArray);
+    }
+
+    @Test
+    public void testSubsetSumWithNegative() {
+        int[] nums = new int[] { 1, -3, 2 };
+        int[] result = combination.subsetSums(nums);
+        int[] expected = new int[] { 0, -1, 3, -2, 2, -3, 1, 0 };
+
+        Arrays.sort(result);
+        Arrays.sort(expected);
+        assertArrayEquals(expected, result);
+
+        int[] originalArray = combination.recoverArray(result, 3);
+        Arrays.sort(originalArray);
+        Arrays.sort(nums);
+        assertArrayEquals(nums, originalArray);
+    }
+
+    @Test
+    public void testSubsetSumWithNegativeAndZero() {
+        int[] nums = new int[] { 0, -1, 4, 5 };
+        int[] result = combination.subsetSums(nums);
+        int[] expected = new int[] { 0, 0, 5, 5, 4, -1, 4, 9, 9, -1, 4, 3, 4, 8, 3, 8 };
+
+        Arrays.sort(result);
+        Arrays.sort(expected);
+        assertArrayEquals(expected, result);
+
+        int[] originalArray = combination.recoverArray(result, 4);
+        Arrays.sort(originalArray);
+        Arrays.sort(nums);
+        assertArrayEquals(nums, originalArray);
+    }
+
+    @Test
+    public void testSubsetSumAllZeros() {
+        int[] nums = new int[] { 0, 0 };
+        int[] result = combination.subsetSums(nums);
+        int[] expected = new int[] { 0, 0, 0, 0 };
+        assertArrayEquals(expected, result);
+
+        int[] originalArray = combination.recoverArray(result, 2);
+        assertArrayEquals(nums, originalArray);
     }
 }

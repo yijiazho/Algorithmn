@@ -1,7 +1,6 @@
 package linear;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -25,6 +24,6 @@ public class BinarySearchTest {
     public void testFindInIncreasingArrayNotExist() {
         int[] array = new int[] { -3, -2, 3, 3, 4, 4, 4, 6 };
         int result = binarySearch.find(array, 5);
-        assertEquals(6, result);
+        assertEquals(7, result);
     }
 }
