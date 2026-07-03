@@ -41,4 +41,27 @@ public class PlaneTest {
         double minDist = plane.minDistance(points);
         assertEquals(1.0, minDist);
     }
+
+    @Test
+    public void testmaxMinimumDistance() {
+        int[][] points = new int[][] {
+                { 2, 0 },
+                { 0, 2 },
+                { 0, 0 },
+                { 2, 2 }
+        };
+        int maxMinDistance = plane.maxMinimumDistance(points);
+        assertEquals(4, maxMinDistance);
+    }
+
+    @Test
+    public void testmaxMinimumDistanceWithSingleSet() {
+        int[][] points = new int[][] {
+                { 10, 0 },
+                { 0, 1 },
+                { 0, 0 }
+        };
+        int maxMinDistance = plane.maxMinimumDistance(points);
+        assertEquals(11, maxMinDistance);
+    }
 }

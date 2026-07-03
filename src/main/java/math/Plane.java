@@ -23,6 +23,101 @@ public class Plane {
         return minDistanceHelper(points, 0, points.length - 1);
     }
 
+    /**
+     * Split the points into two subsets. In each subset, there will be a min
+     * manhattan distance among all random pairs in the subset. If the subset
+     * only contains one value, the min manhattan distance is 0.
+     * Find out the maximum of minimum manhattan distance among all possible splits
+     * 
+     * @param points an array of (x, y) pair
+     * @return the max min manhattan distance
+     */
+    public int maxMinimumDistance(int[][] points) {
+        // bipartisan problem
+        // for any distsance d
+        // we want to know if we can achieve min distance >= d in each subset (1)
+        // And then do binary search for each d (2)
+
+        // To resolve question (1), we can construct a graph where each point is a
+        // vertex
+        // and add an edge between two points if manhattan distance < d
+
+        // find the max distance
+        int n = points.length;
+        int right = 0;
+        for (int i = 0; i < n; i++) {
+            for (int j = i + 1; j < n; j++) {
+                right = Math.max(right, manhattanDistance(points[i], points[j]));
+            }
+        }
+
+        // binary search on the distance
+        int left = 0;
+        while (left < right) {
+            int mid = left + (right - left) / 2;
+            if (canSplit(points, mid)) {
+                left = mid + 1;
+            } else {
+                right = mid - 1;
+            }
+        }
+
+        return left;
+    }
+
+    private boolean canSplit(int[][] points, int limit) {
+        int n = points.length;
+
+        List<Integer>[] graph = new ArrayList[n];
+        for (int i = 0; i < n; i++) {
+            graph[i] = new ArrayList<>();
+        }
+
+        for (int i = 0; i < n; i++) {
+            for (int j = i + 1; j < n; j++) {
+                if (manhattanDistance(points[i], points[j]) < limit) {
+                    graph[i].add(j);
+                    graph[j].add(i);
+                }
+            }
+        }
+
+        // check if bipartisan graph by painting
+        // 0 for untouched, 1 for red, -1 for blue
+        int[] color = new int[n];
+
+        for (int i = 0; i < n; i++) {
+            // i as the entry point, paint all connected vertex to the opposite color
+            if (color[i] == 0) {
+                color[i] = 1;
+                if (!isBipartisan(graph, color, i)) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+
+    private boolean isBipartisan(List<Integer>[] graph, int[] color, int cur) {
+        for (int next : graph[cur]) {
+            if (color[next] == 0) {
+                // untouched
+                color[next] = -color[cur];
+                if (!isBipartisan(graph, color, next)) {
+                    return false;
+                }
+            } else if (color[next] * color[cur] == -1) {
+                // valid but already touched
+                continue;
+            } else {
+                // invalid
+                return false;
+            }
+        }
+        return true;
+    }
+
     private double minDistanceHelper(int[][] points, int startIndex, int endIndex) {
         if (startIndex == endIndex) {
             return Double.MAX_VALUE;
@@ -75,5 +170,11 @@ public class Plane {
         int dx = p1[0] - p2[0];
         int dy = p1[1] - p2[1];
         return Math.sqrt(dx * dx + dy * dy);
+    }
+
+    private int manhattanDistance(int[] p1, int[] p2) {
+        int dx = p1[0] - p2[0];
+        int dy = p1[1] - p2[1];
+        return Math.abs(dx) + Math.abs(dy);
     }
 }
