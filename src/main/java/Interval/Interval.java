@@ -37,6 +37,40 @@ public class Interval {
     }
 
     /**
+     * Minimum number of intervals to remove to make the rest of the intervals
+     * non-overlapping
+     * 
+     * @param intervals an array of intervals where each interval is represented as
+     *                  [start, end]
+     * @return the minimum number of intervals to remove
+     */
+    public int minRemovals(int[][] intervals) {
+        if (intervals.length == 0) {
+            return 0;
+        }
+
+        // sort intervals by end time
+        // If a non-overlapping interval sequence can be append to an interval,
+        // then it can also be append to the interval with the earlier end time
+        Arrays.sort(intervals, (a, b) -> Integer.compare(a[1], b[1]));
+
+        int count = 0;
+        int end = intervals[0][1];
+
+        for (int i = 1; i < intervals.length; i++) {
+            if (intervals[i][0] < end) {
+                // overlap, remove the interval with the larger end time
+                count++;
+            } else {
+                // no overlap, update the end time
+                end = intervals[i][1];
+            }
+        }
+
+        return count;
+    }
+
+    /**
      * Insert the newInterval into an array of intervals.
      * 
      * @param intervals   an array of [start, end] pairs, sorted and non overlapping
