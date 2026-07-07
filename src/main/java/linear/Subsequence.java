@@ -324,4 +324,60 @@ public class Subsequence {
         return result;
     }
 
+    /**
+     * Given an array of integers, return the sum of width of all subsequences. The
+     * width of a sequence is the difference between the maximum and minimum
+     * elements in the sequence.
+     * 
+     */
+    public int sumSubseqWidths(int[] nums) {
+        // Consider an array [3, 1, 2], all the subsequences and the widths are:
+        // 3 -> 3 - 3 = 0
+        // 1 -> 1 - 1 = 0
+        // 2 -> 2 - 2 = 0
+        // 3, 1 -> 3 - 1 = 2
+        // 3, 2 -> 3 - 2 = 1
+        // 1, 2 -> 2 - 1 = 1
+        // 3, 1, 2 -> 3 - 1 = 2
+        // total width is 0 + 0 + 0 + 2 + 1 + 1 + 2 = 6
+
+        // Look at the occurrence of each number in the left of width
+        // 3 -> 4 times, 2 -> 2 times, 1 -> 1 time
+        // Look at the occurrence of each number in the right of width
+        // 3 -> 1 time, 2 -> 2 times, 1 -> 4 times
+
+        // As we can see, the occurrence of 3 is 2 ^ 2 = 4 times in the left, and 2 ^ 0
+        // = 1 time in the right
+        // Because to generate a subsequence of length 3, we need to choose 2 out of 2,
+        // which is C(2, 2) = 1, and to generate a subsequence of length 2, we need to
+        // choose 1 out of 2, which is C(2, 1) = 2, and to generate a subsequence of
+        // length 1, we need to choose 0 out of 2, which is C(2, 0) = 1. So the total
+        // occurrence of 3 in the left is C(2, 2) + C(2, 1) + C(2, 0),
+        // which is exact 2 ^ 2
+
+        // So the overall coefficient of each number is 2 ^ i - 2 ^ (n - 1 - i), where i
+        // is the index of the number in the sorted array, and n is the length of the
+        // array.
+
+        int n = nums.length;
+        long[] twoPower = new long[n];
+        twoPower[0] = 1;
+
+        for (int i = 1; i < n; i++) {
+            twoPower[i] = (2 * twoPower[i - 1]);
+        }
+        long[] efficients = new long[n];
+
+        for (int i = 0; i < n; i++) {
+            efficients[i] = (twoPower[i] - twoPower[n - 1 - i]);
+        }
+
+        Arrays.sort(nums);
+        long res = 0L;
+        for (int i = 0; i < n; i++) {
+            res = (res + nums[i] * efficients[i]);
+        }
+
+        return (int) res;
+    }
 }
