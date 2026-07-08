@@ -1,10 +1,13 @@
-package dataStructure.sexpr;
+package math;
 
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
+
+import dataStructure.sexpr.Expr;
 
 public class ParserTest {
 
@@ -64,7 +67,7 @@ public class ParserTest {
 
     @Test
     public void testParseNestedExpression() {
-        // 1+(2*3) - 4/2  →  (- (+ 1 (* 2 3)) (/ 4 2))
+        // 1+(2*3) - 4/2 → (- (+ 1 (* 2 3)) (/ 4 2))
         List<Expr> result = parser.parse("1+2*3-4/2");
         assertEquals(1, result.size());
         assertEquals("(- (+ 1 (* 2 3)) (/ 4 2))", result.get(0).expr());

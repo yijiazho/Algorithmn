@@ -5,13 +5,32 @@ import java.util.Arrays;
 public class Palindrome {
 
     /**
+     * Count the number of binary palindromes from 0 to n, inclusive
+     * 
+     * @param n non negative integer
+     * @return the number of binary palindromes from 0 to n, inclusive
+     */
+    public int countNumberOfBinaryPalindromes(int n) {
+        if (n <= 0) {
+            return 0;
+        }
+        int count = 0;
+        for (int i = 0; i <= n; i++) {
+            if (isBinaryPalindrome(i)) {
+                count++;
+            }
+        }
+        return count;
+    }
+
+    /**
      * Find the shortest palindrome string starting from the original input
      * by adding characters on the beginning only
      * 
      * @param s original input string, must be non empty
      * @return shortest string that is palindrome
      */
-    public String shortestPalindrome(String s) {
+    public String shortestPalindromeAfterAppendingLeadingCharacters(String s) {
         int l = s.length();
         if (l == 0) {
             return "";
@@ -59,7 +78,7 @@ public class Palindrome {
      * @param s original input string, must be non empty
      * @return if we can make the original string an palindrome one
      */
-    public boolean validPalindromeAfterRemoving(String s) {
+    public boolean isPalindromeAfterRemovingAtMostOneCharacter(String s) {
         int l = s.length();
         // isPalin[i][j][k] means if s.substring(i, j + 1) is palindrome
         // if remove k from this substring
@@ -94,15 +113,14 @@ public class Palindrome {
 
     /**
      * Find the minimum cost that makes an int array into a palindrome number,
-     * meaning all elements must equal to the same number. The allowed operation is
-     * change a value to positive integer,
+     * The allowed operation is changing a value to positive integer,
      * the cost will be the absolute value of the difference between the original
      * value and the changed value
      * 
      * @param nums The original integer array, must be non empty
      * @return total cost making the array palindrome
      */
-    public long minimumCost(int[] nums) {
+    public long minimumCostToMakePalindrome(int[] nums) {
         Arrays.sort(nums);
         int l = nums.length;
 
@@ -151,7 +169,7 @@ public class Palindrome {
      * @param k integer, which is no larger than the string length
      * @return if the string can be palindrome
      */
-    public boolean isValidPalindrome(String s, int k) {
+    public boolean isPalindromeAfterRemovingAtMostKCharacters(String s, int k) {
         int l = s.length();
         // isPalin[i][j][p] = true/false means if
         // s.substring(i, j + 1) can or cannot be palindrome
@@ -228,5 +246,18 @@ public class Palindrome {
         smaller = Integer.toString(Integer.parseInt(half) - 1);
         smaller = smaller + new StringBuilder(smaller.substring(0, s.length() / 2)).reverse().toString();
         return Integer.parseInt(smaller);
+    }
+
+    private boolean isBinaryPalindrome(int n) {
+        String binaryString = Integer.toBinaryString(n);
+        int left = 0, right = binaryString.length() - 1;
+        while (left < right) {
+            if (binaryString.charAt(left) != binaryString.charAt(right)) {
+                return false;
+            }
+            left++;
+            right--;
+        }
+        return true;
     }
 }

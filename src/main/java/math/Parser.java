@@ -1,4 +1,4 @@
-package dataStructure.sexpr;
+package math;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
@@ -6,12 +6,17 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Queue;
 
+import dataStructure.sexpr.AtomExpr;
+import dataStructure.sexpr.Expr;
+import dataStructure.sexpr.ListExpr;
+
 public class Parser {
 
     /**
      * Parse the input string into a list of Expr objects.
      * Converts infix expressions like "1+2*3" into prefix S-expression trees:
-     * ListExpr([AtomExpr("+"), AtomExpr("1"), ListExpr([AtomExpr("*"), AtomExpr("2"), AtomExpr("3")])])
+     * ListExpr([AtomExpr("+"), AtomExpr("1"), ListExpr([AtomExpr("*"),
+     * AtomExpr("2"), AtomExpr("3")])])
      * Respects standard operator precedence: * / bind tighter than + -
      *
      * @param input
