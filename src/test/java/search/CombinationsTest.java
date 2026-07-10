@@ -127,4 +127,5 @@ public class CombinationsTest {
         int[] originalArray = combination.recoverArray(result, 2);
         assertArrayEquals(nums, originalArray);
     }
+
 }
