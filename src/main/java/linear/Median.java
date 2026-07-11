@@ -13,7 +13,7 @@ public class Median {
      * @param n2 sorted array, descending
      * @return the median
      */
-    public double findMedian(int[] n1, int[] n2) {
+    public double findMedianInTwoSortedArrays(int[] n1, int[] n2) {
         int l1 = n1.length;
         int l2 = n2.length;
         int l = l1 + l2;
@@ -67,6 +67,72 @@ public class Median {
     }
 
     /**
+     * Find the median of a n * n matrix. Each row of the matrix is sorted in
+     * ascending order. n is odd.
+     * 
+     * @param matrix a n * n matrix, each row is sorted in ascending order
+     * @return the median of the matrix
+     */
+    public int findMedianInMatrix(int[][] matrix) {
+        int n = matrix.length;
+        int total = n * n;
+        int[] startingIndex = new int[n];
+        return removeSmallest(matrix, total / 2, startingIndex);
+    }
+
+    private int removeSmallest(int[][] matrix, int toRemove, int[] startingIndex) {
+        int n = matrix.length;
+
+        if (toRemove == 0) {
+            // find the min value of each leading number
+            int min = Integer.MAX_VALUE;
+            for (int i = 0; i < n; i++) {
+                if (startingIndex[i] < n) {
+                    min = Math.min(min, matrix[i][startingIndex[i]]);
+                }
+            }
+            return min;
+        }
+
+        if (toRemove < n) {
+            // remove the smallest number
+            int minIndex = -1;
+            int minValue = Integer.MAX_VALUE;
+            for (int i = 0; i < n; i++) {
+                if (startingIndex[i] < n && matrix[i][startingIndex[i]] < minValue) {
+                    minValue = matrix[i][startingIndex[i]];
+                    minIndex = i;
+                }
+            }
+            startingIndex[minIndex]++;
+            return removeSmallest(matrix, toRemove - 1, startingIndex);
+        }
+
+        // try to remove number equals to toRemove / n
+        int minIndex = -1;
+        int minValue = Integer.MAX_VALUE;
+        int removed = -1;
+        for (int i = 0; i < n; i++) {
+            if (startingIndex[i] >= n) {
+                continue;
+            }
+            int index = startingIndex[i] + toRemove / n - 1;
+            if (index >= n) {
+                index = n - 1;
+            }
+            if (matrix[i][index] < minValue) {
+                minValue = matrix[i][index];
+                minIndex = i;
+                removed = index - startingIndex[i] + 1;
+            }
+        }
+
+        // find the min value and push the starting index to the next one
+        startingIndex[minIndex] += removed;
+        return removeSmallest(matrix, toRemove - removed, startingIndex);
+    }
+
+    /**
      * Count the number of subarrays whose median is exactly k,
      * the median of an array of even length is the smaller median
      * 
@@ -74,7 +140,7 @@ public class Median {
      * @param k    the target value
      * @return the number of subarrays
      */
-    public int countSubarrays(int[] nums, int k) {
+    public int numberOfSubarraysWithMedian(int[] nums, int k) {
         // The goal is to find an i, j pair, where i <= kIndex <= j
         // as left and right boundary of subarray respectively,
         // both inclusively
