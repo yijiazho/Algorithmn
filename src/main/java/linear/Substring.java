@@ -5,6 +5,16 @@ import java.util.List;
 
 public class Substring {
 
+    /**
+     * Find the first occurrence of needle in haystack, return the index of the
+     * first character of the first occurrence, or -1 if needle is not part of
+     * haystack
+     * 
+     * @param haystack the original string, not null
+     * @param needle   the substring to find, not null
+     * @return the index of the first character of the first occurrence, or -1 if
+     *         needle is not part of haystack
+     */
     public int longestSubString(String haystack, String needle) {
         if (needle.isEmpty()) {
             return 0; // Empty needle matches at the beginning.
@@ -279,5 +289,51 @@ public class Substring {
         }
 
         return s.substring(i);
+    }
+
+    /**
+     * Find the total cost of the array. For each subarray, the cost is defined as
+     * the product of the total sum and the minimum value of the subarray. mod by
+     * 10^9 + 7
+     * 
+     * @param nums the input array, non null, non empty
+     * @return the total cost of all subarrays, positive integer
+     */
+    public int totalCosts(int[] nums) {
+        int mod = 1_000_000_007;
+        // For each left, right boundary, we need to find the sum of subarray, and the
+        // minimum value in the subarray, preferably in O(1)
+
+        // Alternatively, we for each index i, we can find the left and right boundary
+        // where nums[i] is the minimum value. If the closest smaller value on the left
+        // is at index l, then left boundary can be any index from l + 1 to i.
+        // Similarly, if the closest smaller or equal value on the right is at index r,
+        // then right boundary can be any index from i to r - 1.
+
+        // prefixSum[i] = sum of nums[0..i - 1], prefixSum[0] = 0
+        int[] prefixSum = new int[nums.length + 1];
+        for (int i = 0; i < nums.length; i++) {
+            prefixSum[i + 1] = prefixSum[i] + nums[i];
+        }
+
+        // minValue[i][j] = min of nums[i..j], i <= j
+        int[][] minValue = new int[nums.length][nums.length];
+        for (int i = 0; i < nums.length; i++) {
+            minValue[i][i] = nums[i];
+            for (int j = i + 1; j < nums.length; j++) {
+                minValue[i][j] = Math.min(minValue[i][j - 1], nums[j]);
+            }
+        }
+
+        long totalCost = 0;
+        for (int i = 0; i < nums.length; i++) {
+            for (int j = i; j < nums.length; j++) {
+                long sum = prefixSum[j + 1] - prefixSum[i];
+                long min = minValue[i][j];
+                totalCost = (totalCost + sum * min) % mod;
+            }
+        }
+
+        return (int) totalCost;
     }
 }
