@@ -6,17 +6,17 @@ import game.Board;
 
 public class GoBoard implements Board {
     private static final int[][] DIRECTIONS = new int[][] { { 1, 0 }, { 0, -1 }, { -1, 0 }, { 0, 1 } };
-    private final Piece[][] grid = new Piece[8][8];
+    private final GoPiece[][] grid = new GoPiece[8][8];
 
-    public Piece getCell(int row, int col) {
+    public GoPiece getCell(int row, int col) {
         return grid[row][col];
     }
 
-    public void setCell(int row, int col, Piece piece) {
+    public void setCell(int row, int col, GoPiece piece) {
         grid[row][col] = piece;
     }
 
-    public Optional<Piece> hasPiece(int row, int col) {
+    public Optional<GoPiece> hasPiece(int row, int col) {
         if (grid[row][col] != null) {
             return Optional.of(grid[row][col]);
         } else {

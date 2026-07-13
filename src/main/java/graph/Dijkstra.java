@@ -28,13 +28,13 @@ public class Dijkstra {
         }
     }
 
-    public int dijkstra(List<List<Path>> graph, int n, int dest) {
+    public int dijkstra(List<List<Path>> graph, int n, int start, int dest) {
         int[] dist = new int[n];
         Arrays.fill(dist, Integer.MAX_VALUE);
         PriorityQueue<Node> pq = new PriorityQueue<>((n1, n2) -> n1.dist - n2.dist);
 
-        pq.offer(new Node(0, 0));
-        dist[0] = 0;
+        pq.offer(new Node(start, 0));
+        dist[start] = 0;
         while (!pq.isEmpty()) {
             Node cur = pq.poll();
 
@@ -49,7 +49,7 @@ public class Dijkstra {
         return dist[dest];
     }
 
-    private List<List<Path>> buildGraph(int n, int[][] edges) {
+    public List<List<Path>> buildGraph(int n, int[][] edges) {
         List<List<Path>> res = new ArrayList<>();
         for (int i = 0; i < n; i++) {
             res.add(new ArrayList<>());

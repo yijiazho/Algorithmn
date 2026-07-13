@@ -11,12 +11,12 @@ public class ChessRuleSet implements RuleSet<ChessBoard, ChessMove, Player> {
 
     @Override
     public boolean isMoveValid(ChessMove move, ChessBoard board) {
-        Piece piece = board.getCell(move.fromRow, move.fromCol);
+        ChessPiece piece = board.getCell(move.fromRow, move.fromCol);
         if (piece == null || piece.color != move.getPlayer().getSymbol()) {
             return false;
         }
 
-        Piece target = board.getCell(move.toRow, move.toCol);
+        ChessPiece target = board.getCell(move.toRow, move.toCol);
         // cannot move to the same color piece
         if (target != null && target.color == piece.color) {
             return false;
@@ -39,7 +39,7 @@ public class ChessRuleSet implements RuleSet<ChessBoard, ChessMove, Player> {
         return false;
     }
 
-    private boolean validatePawnMove(Piece pawn, ChessMove move, ChessBoard board) {
+    private boolean validatePawnMove(ChessPiece pawn, ChessMove move, ChessBoard board) {
         int direction = (pawn.color == 'W') ? -1 : 1;
         int dr = move.toRow - move.fromRow;
         int dc = move.toCol - move.fromCol;
@@ -56,7 +56,7 @@ public class ChessRuleSet implements RuleSet<ChessBoard, ChessMove, Player> {
             }
         } else if (Math.abs(dc) == 1 && dr == direction) {
             // Capture
-            Piece target = board.getCell(move.toRow, move.toCol);
+            ChessPiece target = board.getCell(move.toRow, move.toCol);
             return target != null && target.color != pawn.color;
         }
         return false;
@@ -68,7 +68,7 @@ public class ChessRuleSet implements RuleSet<ChessBoard, ChessMove, Player> {
             int minCol = Math.min(move.fromCol, move.toCol);
             int maxCol = Math.max(move.fromCol, move.toCol);
             for (int col = minCol + 1; col < maxCol; col++) {
-                Optional<Piece> piece = board.hasPiece(move.fromRow, col);
+                Optional<ChessPiece> piece = board.hasPiece(move.fromRow, col);
                 if (piece.isPresent()) {
                     return false;
                 }
@@ -78,7 +78,7 @@ public class ChessRuleSet implements RuleSet<ChessBoard, ChessMove, Player> {
             int minRow = Math.min(move.fromRow, move.toRow);
             int maxRow = Math.max(move.fromRow, move.toRow);
             for (int row = minRow + 1; row < maxRow; row++) {
-                Optional<Piece> piece = board.hasPiece(row, move.fromCol);
+                Optional<ChessPiece> piece = board.hasPiece(row, move.fromCol);
                 if (piece.isPresent()) {
                     return false;
                 }
@@ -96,7 +96,7 @@ public class ChessRuleSet implements RuleSet<ChessBoard, ChessMove, Player> {
             int minRow = Math.min(move.fromRow, move.toRow);
             int minCol = Math.min(move.fromCol, move.toCol);
             for (int i = 1; i < Math.abs(dr); i++) {
-                Optional<Piece> piece = board.hasPiece(minRow + i, minCol + i);
+                Optional<ChessPiece> piece = board.hasPiece(minRow + i, minCol + i);
                 if (piece.isPresent()) {
                     return false;
                 }
@@ -106,7 +106,7 @@ public class ChessRuleSet implements RuleSet<ChessBoard, ChessMove, Player> {
             int minRow = Math.min(move.fromRow, move.toRow);
             int maxCol = Math.max(move.fromCol, move.toCol);
             for (int i = 1; i < Math.abs(dr); i++) {
-                Optional<Piece> piece = board.hasPiece(minRow + i, maxCol - i);
+                Optional<ChessPiece> piece = board.hasPiece(minRow + i, maxCol - i);
                 if (piece.isPresent()) {
                     return false;
                 }
@@ -142,8 +142,8 @@ public class ChessRuleSet implements RuleSet<ChessBoard, ChessMove, Player> {
             boolean hasKing = false;
             for (int r = 0; r < 8; r++) {
                 for (int c = 0; c < 8; c++) {
-                    Piece piece = board.getCell(r, c);
-                    if (piece != null && piece.type == Piece.Type.KING && piece.color == player.getSymbol()) {
+                    ChessPiece piece = board.getCell(r, c);
+                    if (piece != null && piece.type == ChessPiece.Type.KING && piece.color == player.getSymbol()) {
                         hasKing = true;
                     }
                 }
@@ -168,7 +168,7 @@ public class ChessRuleSet implements RuleSet<ChessBoard, ChessMove, Player> {
         List<ChessMove> moves = new ArrayList<>();
         for (int r1 = 0; r1 < 8; r1++) {
             for (int c1 = 0; c1 < 8; c1++) {
-                Piece piece = board.getCell(r1, c1);
+                ChessPiece piece = board.getCell(r1, c1);
                 if (piece != null && piece.color == player.getSymbol()) {
                     for (int r2 = 0; r2 < 8; r2++) {
                         for (int c2 = 0; c2 < 8; c2++) {

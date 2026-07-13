@@ -1,27 +1,6 @@
 package linear;
 
-import java.util.Arrays;
-
 public class Palindrome {
-
-    /**
-     * Count the number of binary palindromes from 0 to n, inclusive
-     * 
-     * @param n non negative integer
-     * @return the number of binary palindromes from 0 to n, inclusive
-     */
-    public int countNumberOfBinaryPalindromes(int n) {
-        if (n <= 0) {
-            return 0;
-        }
-        int count = 0;
-        for (int i = 0; i <= n; i++) {
-            if (isBinaryPalindrome(i)) {
-                count++;
-            }
-        }
-        return count;
-    }
 
     /**
      * Find the shortest palindrome string starting from the original input
@@ -112,57 +91,6 @@ public class Palindrome {
     }
 
     /**
-     * Find the minimum cost that makes an int array into a palindrome number,
-     * The allowed operation is changing a value to positive integer,
-     * the cost will be the absolute value of the difference between the original
-     * value and the changed value
-     * 
-     * @param nums The original integer array, must be non empty
-     * @return total cost making the array palindrome
-     */
-    public long minimumCostToMakePalindrome(int[] nums) {
-        Arrays.sort(nums);
-        int l = nums.length;
-
-        // change to the median will make the total sum minimum
-        return palindromeWithMinCost(nums[l / 2], nums);
-    }
-
-    /**
-     * Find out the minimum cost to make an integer to a palindrome integer, the
-     * cost is defined by the sum of absolute difference between the palindrome
-     * number and the number in the integer array
-     * 
-     * @param n    original integer to make it palindrome
-     * @param nums the cost to calculate based on
-     * @return total cost based on the nums array
-     */
-    public long palindromeWithMinCost(int n, int[] nums) {
-
-        if (isPalindrome(n)) {
-            long sum = 0L;
-            for (int element : nums) {
-                sum += Math.abs(element - n);
-            }
-            return sum;
-        }
-
-        // Find the closest palindromes
-        int largerPalindrome = findLargerPalindrome(n);
-        int smallerPalindrome = findSmallerPalindrome(n);
-
-        long sum1 = 0L;
-        long sum2 = 0L;
-
-        for (int element : nums) {
-            sum1 += Math.abs(element - largerPalindrome);
-            sum2 += Math.abs(element - smallerPalindrome);
-        }
-
-        return Math.min(sum1, sum2);
-    }
-
-    /**
      * Find out if a string can be palindrome by removing at most k characters
      * 
      * @param s original string, non empty, with lower cases only
@@ -204,60 +132,5 @@ public class Palindrome {
         return false;
 
         // alternatively, we can use Subsequence.longestPalindromeSubsequence()
-    }
-
-    private boolean isPalindrome(int n) {
-        String s = Integer.toString(n);
-        int left = 0, right = s.length() - 1;
-        while (left < right) {
-            if (s.charAt(left) != s.charAt(right))
-                return false;
-            left++;
-            right--;
-        }
-        return true;
-    }
-
-    private int findLargerPalindrome(int n) {
-        String s = Integer.toString(n);
-        String half = s.substring(0, (s.length() + 1) / 2);
-        String larger = half + new StringBuilder(half.substring(0, s.length() / 2)).reverse().toString();
-        int largerPalindrome = Integer.parseInt(larger);
-        if (largerPalindrome > n) {
-            return largerPalindrome;
-        }
-        // Handle special case for numbers like 999, where the next palindrome needs
-        // extra digit
-        larger = Integer.toString(Integer.parseInt(half) + 1);
-        larger = larger + new StringBuilder(larger.substring(0, s.length() / 2)).reverse().toString();
-        return Integer.parseInt(larger);
-    }
-
-    private int findSmallerPalindrome(int n) {
-        String s = Integer.toString(n);
-        String half = s.substring(0, (s.length() + 1) / 2);
-        String smaller = half + new StringBuilder(half.substring(0, s.length() / 2)).reverse().toString();
-        int smallerPalindrome = Integer.parseInt(smaller);
-        if (smallerPalindrome < n) {
-            return smallerPalindrome;
-        }
-        // Handle special case for numbers like 1000, where the next smaller palindrome
-        // has fewer digits
-        smaller = Integer.toString(Integer.parseInt(half) - 1);
-        smaller = smaller + new StringBuilder(smaller.substring(0, s.length() / 2)).reverse().toString();
-        return Integer.parseInt(smaller);
-    }
-
-    private boolean isBinaryPalindrome(int n) {
-        String binaryString = Integer.toBinaryString(n);
-        int left = 0, right = binaryString.length() - 1;
-        while (left < right) {
-            if (binaryString.charAt(left) != binaryString.charAt(right)) {
-                return false;
-            }
-            left++;
-            right--;
-        }
-        return true;
     }
 }

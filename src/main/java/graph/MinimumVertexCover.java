@@ -5,6 +5,18 @@ import java.util.List;
 
 public class MinimumVertexCover {
 
+    /**
+     * Find the minimum vertex cover of a graph represented by edges and number of
+     * vertices n. A vertex cover is a set of vertices such that every edge in the
+     * graph is incident to at least one vertex in the set.
+     * 
+     * @param edges a list of edges, where each edge is represented as a list of two
+     *              integers [u, v] indicating an undirected edge between vertices u
+     *              and v
+     * @param n     the number of vertices in the graph
+     * @return a list of integers representing the vertices in the minimum vertex
+     *         cover
+     */
     public List<Integer> findMinimumVertexCover(List<List<Integer>> edges, int n) {
         // Build the graph
         Vertex[] vertices = new Vertex[n];

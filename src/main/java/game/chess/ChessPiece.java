@@ -1,6 +1,6 @@
 package game.chess;
 
-public class Piece {
+public class ChessPiece {
     public enum Type {
         KING, QUEEN, ROOK, BISHOP, KNIGHT, PAWN
     }
@@ -8,7 +8,7 @@ public class Piece {
     public final Type type;
     public final char color; // 'W' or 'B'
 
-    public Piece(Type type, char color) {
+    public ChessPiece(Type type, char color) {
         this.type = type;
         this.color = color;
     }

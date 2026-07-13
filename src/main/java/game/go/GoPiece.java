@@ -1,9 +1,9 @@
 package game.go;
 
-public class Piece {
+public class GoPiece {
     public final char color; // 'W' or 'B'
 
-    public Piece(char color) {
+    public GoPiece(char color) {
         this.color = color;
     }
 

@@ -34,11 +34,4 @@ public class PalindromeTest {
         boolean result = palindrome.isPalindromeAfterRemovingAtMostKCharacters(s, 2);
         assertEquals(true, result);
     }
-
-    @Test
-    public void testCountNumberOfBinaryPalindromes() {
-        int n = 10;
-        int result = palindrome.countNumberOfBinaryPalindromes(n);
-        assertEquals(6, result);
-    }
 }
