@@ -2,6 +2,7 @@ package linear;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -18,72 +19,121 @@ public class Stocks {
      * @param prices       double array, non empty and each element is positive
      * @param X            number of days to apply long term tax
      * @param shortTermTax 0 < shortTermTax < 1
-     * @param longTermTax  0 < longTermTax < shorTermTax
+     * @param longTermTax  0 < longTermTax < shortTermTax
      * @return
      */
     public double maxProfit(double[] prices, int X, double shortTermTax, double longTermTax) {
-        Map<String, Double> memo = new HashMap<>();
-        return dfs(0, new ArrayList<>(), prices, X, shortTermTax, longTermTax, memo);
+        Map<State, Double> memo = new HashMap<>();
+        double[] max = new double[1];
+        search(0, new ArrayList<>(), prices, X, shortTermTax, longTermTax, max, memo);
+        return max[0];
     }
 
-    private double dfs(int day, List<Stock> holdings, double[] prices, int X,
-            double shortTermTax, double longTermTax, Map<String, Double> memo) {
+    /**
+     * Traverse the days and try all possible actions, memorize the max profit for
+     * each state.
+     * 
+     * @param day          the current day
+     * @param holdings     the list of days when stocks were bought
+     * @param prices       the array of stock prices
+     * @param X            the number of days to apply long term tax
+     * @param shortTermTax the short term tax rate
+     * @param longTermTax  the long term tax rate
+     * @param max          the max profit found so far
+     * @param memo         max profit of each state before making a decision. The
+     *                     state is represented by the current day and the list
+     *                     of
+     *                     days when stocks were bought.
+     */
+    private double search(int day, List<Integer> holdings, double[] prices,
+            int X, double shortTermTax, double longTermTax, double[] max,
+            Map<State, Double> memo) {
+        State state = new State(day, holdings);
+        if (memo.containsKey(state)) {
+            return memo.get(state);
+        }
+
         if (day == prices.length) {
             return 0.0;
         }
 
-        String key = day + "#" + encode(holdings);
-        if (memo.containsKey(key)) {
-            return memo.get(key);
-        }
-
-        double max = 0.0;
-
-        // Option 1: Do nothing
-        max = Math.max(max, dfs(day + 1, holdings, prices, X, shortTermTax, longTermTax, memo));
-
-        // Option 2: Buy 1 unit
-        List<Stock> afterBuy = new ArrayList<>(holdings);
-        afterBuy.add(new Stock(prices[day], day));
-        max = Math.max(max, dfs(day + 1, afterBuy, prices, X, shortTermTax, longTermTax, memo));
-
-        // Option 3: Try selling any subset (generate all subsets)
-        int n = holdings.size();
-        for (int mask = 1; mask < (1 << n); mask++) {
-            List<Stock> remain = new ArrayList<>();
-            double profit = 0.0;
-            for (int i = 0; i < n; i++) {
-                if ((mask & (1 << i)) != 0) {
-                    Stock stock = holdings.get(i);
-                    double tax = (day - stock.day) >= X ? longTermTax : shortTermTax;
-                    profit += (prices[day] - stock.price) * (1 - tax);
-                } else {
-                    remain.add(holdings.get(i));
-                }
+        double profit = 0.0;
+        if (day == prices.length - 1) {
+            // sell all holdings on the last day
+            for (int buyDay : holdings) {
+                profit += profitAfterTax(prices[buyDay], prices[day], buyDay, day, X, shortTermTax, longTermTax);
             }
-            double total = profit + dfs(day + 1, remain, prices, X, shortTermTax, longTermTax, memo);
-            max = Math.max(max, total);
+            max[0] = Math.max(max[0], profit);
+            memo.put(state, profit);
+            return profit;
         }
 
-        memo.put(key, max);
-        return max;
-    }
+        // do nothing
+        search(day + 1, holdings, prices, X, shortTermTax, longTermTax, max, memo);
 
-    private String encode(List<Stock> holdings) {
-        StringBuilder sb = new StringBuilder();
-        for (Stock s : holdings) {
-            sb.append("BOUGHT_ON").append(s.day).append(",");
+        // buy 1 unit
+        List<Integer> afterBuy = new ArrayList<>(holdings);
+        afterBuy.add(day);
+        search(day + 1, afterBuy, prices, X, shortTermTax, longTermTax, max, memo);
+
+        // sell any amount of holdings
+        int n = holdings.size();
+        double sellProfit = 0.0;
+        double totalProfit = 0.0;
+        List<Integer> remain = new LinkedList<>(holdings);
+        for (int i = 0; i < n; i++) {
+            // try to sell the first holding at a time
+            int buyDay = remain.remove(0);
+            sellProfit += profitAfterTax(prices[buyDay], prices[day], buyDay, day, X, shortTermTax, longTermTax);
+
+            // memorize this state and continue searching
+            double futureProfit = search(day + 1, remain, prices, X, shortTermTax, longTermTax, max, memo);
+            totalProfit = Math.max(totalProfit, sellProfit + futureProfit);
         }
-        return sb.toString();
+
+        max[0] = Math.max(max[0], totalProfit);
+        if (totalProfit > memo.getOrDefault(state, 0.0)) {
+            memo.put(state, totalProfit);
+        }
+        return totalProfit;
     }
 
-    private class Stock {
-        double price;
-        int day;
+    private double profitAfterTax(double buyPrice, double sellPrice, int buyDay, int sellDay,
+            int X, double shortTermTax, double longTermTax) {
+        double tax = (sellDay - buyDay) >= X ? longTermTax : shortTermTax;
+        if (sellPrice > buyPrice) {
+            return (sellPrice - buyPrice) * (1 - tax);
+        } else {
+            return sellPrice - buyPrice;
+        }
+    }
 
-        Stock(double price, int day) {
-            this.price = price;
-            this.day = day;
+    private class State {
+        int currentDay;
+        List<Integer> holdings;
+
+        State(int currentDay, List<Integer> holdings) {
+            this.currentDay = currentDay;
+            this.holdings = new ArrayList<>(holdings);
+        }
+
+        @Override
+        public int hashCode() {
+            int result = Integer.hashCode(currentDay);
+            for (int day : holdings) {
+                result = 31 * result + Integer.hashCode(day);
+            }
+            return result;
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            if (this == obj)
+                return true;
+            if (!(obj instanceof State))
+                return false;
+            State other = (State) obj;
+            return this.currentDay == other.currentDay && this.holdings.equals(other.holdings);
         }
     }
 }

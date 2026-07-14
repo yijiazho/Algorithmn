@@ -4,7 +4,7 @@ import java.util.Optional;
 
 import game.Board;
 
-public class GoBoard implements Board {
+public class GoBoard implements Board<GoPiece> {
     private static final int[][] DIRECTIONS = new int[][] { { 1, 0 }, { 0, -1 }, { -1, 0 }, { 0, 1 } };
     private final GoPiece[][] grid = new GoPiece[8][8];
 
