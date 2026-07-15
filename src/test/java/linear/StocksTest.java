@@ -23,6 +23,9 @@ public class StocksTest {
         double expected = 88.2;
         double result = stocks.maxProfit(prices, 2, shortTermTax, longTermTax);
         assertEquals(expected, result, 0.0001);
+
+        double resultReverse = stocks.maxProfitReverse(prices, 2, shortTermTax, longTermTax);
+        assertEquals(expected, resultReverse, 0.0001);
     }
 
     @Test
@@ -34,6 +37,9 @@ public class StocksTest {
         double expected = 16.0;
         double result = stocks.maxProfit(prices, 3, shortTermTax, longTermTax);
         assertEquals(expected, result, 0.0001);
+
+        double resultReverse = stocks.maxProfitReverse(prices, 3, shortTermTax, longTermTax);
+        assertEquals(expected, resultReverse, 0.0001);
     }
 
     @Test
@@ -45,6 +51,9 @@ public class StocksTest {
         double expected = 14.1;
         double result = stocks.maxProfit(prices, 3, shortTermTax, longTermTax);
         assertEquals(expected, result, 0.0001);
+
+        double resultReverse = stocks.maxProfitReverse(prices, 3, shortTermTax, longTermTax);
+        assertEquals(expected, resultReverse, 0.0001);
     }
 
     @Test
@@ -55,6 +64,9 @@ public class StocksTest {
         double expected = 0.0;
         double result = stocks.maxProfit(prices, 2, shortTermTax, longTermTax);
         assertEquals(expected, result, 0.0001);
+
+        double resultReverse = stocks.maxProfitReverse(prices, 2, shortTermTax, longTermTax);
+        assertEquals(expected, resultReverse, 0.0001);
     }
 
     @Test
@@ -66,6 +78,9 @@ public class StocksTest {
         double expected = 20.7;
         double result = stocks.maxProfit(prices, 2, shortTermTax, longTermTax);
         assertEquals(expected, result, 0.0001);
+
+        double resultReverse = stocks.maxProfitReverse(prices, 2, shortTermTax, longTermTax);
+        assertEquals(expected, resultReverse, 0.0001);
     }
 
 }

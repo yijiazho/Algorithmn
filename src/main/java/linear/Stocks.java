@@ -29,6 +29,42 @@ public class Stocks {
         return max[0];
     }
 
+    public double maxProfitReverse(double[] prices, int X, double shortTermTax, double longTermTax) {
+        int n = prices.length;
+        double totalMaxProfit = 0.0;
+        // for each buy, there must exist a sell after it. So we can ignore the state
+        // when we hold some unsold shares and only focus on the buy/sell day pair.
+
+        // maxProfit[i][j] = max profit, when all buys are on or before day i, and all
+        // sells are on or before day j.
+        // 1. If we do not buy on day i, then maxProfit[i][j] = maxProfit[i-1][j]
+        // 2. If we buy on day i and sell before day j, then maxProfit[i][j] =
+        // maxProfit[i][j-1]
+        // 3. If we buy on day i and sell on day j, then maxProfit[i][j] =
+        // maxProfit[i-1][j] + profitAfterTax (previous sell can happen on day j)
+        double[][] maxProfit = new double[n][n];
+
+        // initialize the first row, when we buy on day 0 (or don't buy at all)
+        for (int j = 1; j < n; j++) {
+            maxProfit[0][j] = profitAfterTaxNonNegative(prices[0], prices[j], 0, j, X, shortTermTax, longTermTax);
+            if (j > 1) {
+                maxProfit[0][j] = Math.max(maxProfit[0][j], maxProfit[0][j - 1]);
+            }
+            totalMaxProfit = Math.max(totalMaxProfit, maxProfit[0][j]);
+        }
+
+        for (int i = 1; i < n; i++) {
+            for (int j = i + 1; j < n; j++) {
+                maxProfit[i][j] = Math.max(maxProfit[i - 1][j], maxProfit[i][j - 1]);
+                maxProfit[i][j] = Math.max(maxProfit[i][j],
+                        maxProfit[i - 1][j] +
+                                profitAfterTaxNonNegative(prices[i], prices[j], i, j, X, shortTermTax, longTermTax));
+                totalMaxProfit = Math.max(totalMaxProfit, maxProfit[i][j]);
+            }
+        }
+        return totalMaxProfit;
+    }
+
     /**
      * Traverse the days and try all possible actions, memorize the max profit for
      * each state.
@@ -42,8 +78,8 @@ public class Stocks {
      * @param max          the max profit found so far
      * @param memo         max profit of each state before making a decision. The
      *                     state is represented by the current day and the list
-     *                     of
-     *                     days when stocks were bought.
+     *                     of days when stocks were bought.
+     * @return the max profit for the current state
      */
     private double search(int day, List<Integer> holdings, double[] prices,
             int X, double shortTermTax, double longTermTax, double[] max,
@@ -105,6 +141,16 @@ public class Stocks {
             return (sellPrice - buyPrice) * (1 - tax);
         } else {
             return sellPrice - buyPrice;
+        }
+    }
+
+    private double profitAfterTaxNonNegative(double buyPrice, double sellPrice, int buyDay, int sellDay,
+            int X, double shortTermTax, double longTermTax) {
+        double tax = (sellDay - buyDay) >= X ? longTermTax : shortTermTax;
+        if (sellPrice > buyPrice) {
+            return (sellPrice - buyPrice) * (1 - tax);
+        } else {
+            return 0.0;
         }
     }
 
