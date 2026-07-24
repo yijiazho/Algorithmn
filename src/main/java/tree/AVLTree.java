@@ -2,14 +2,14 @@ package tree;
 
 public class AVLTree<T> {
 
-    private AVLNode<T> root;
+    private AVLNode root;
 
-    private static class AVLNode<T> {
+    private class AVLNode {
 
-        private T t;
+        private final T t;
         private int height;
-        private AVLNode<T> left;
-        private AVLNode<T> right;
+        private AVLNode left;
+        private AVLNode right;
 
         private AVLNode(T t) {
             this.t = t;
@@ -21,41 +21,60 @@ public class AVLTree<T> {
         root = insert(root, value);
     }
 
-    private AVLNode<T> insert(AVLNode<T> n, T v) {
-        if (n == null) {
-            n = new AVLNode<T>(v);
-            return n;
+    /**
+     * Insert a value into the AVL tree and return the new root of the subtree. If
+     * the subtree is unbalanced, perform rotations to restore balance.
+     * 
+     * @param n the root of the subtree
+     * @param v the value to insert
+     * @return the new root of the subtree
+     */
+    private AVLNode insert(AVLNode node, T v) {
+        if (node == null) {
+            node = new AVLNode(v);
+            return node;
         } else {
-            int k = ((Comparable) n.t).compareTo(v);
+            // Compare the value to insert with the value of the current node
+            int k = ((Comparable<T>) node.t).compareTo(v);
             if (k > 0) {
-                n.left = insert(n.left, v);
+                node.left = insert(node.left, v);
             } else {
-                n.right = insert(n.right, v);
+                node.right = insert(node.right, v);
             }
-            n.height = Math.max(height(n.left), height(n.right)) + 1;
-            int heightDiff = heightDiff(n);
+            node.height = Math.max(height(node.left), height(node.right)) + 1;
+            int heightDiff = heightDiff(node);
+
             if (heightDiff < -1) {
-                if (heightDiff(n.right) > 0) {
-                    n.right = rightRotate(n.right);
-                    return leftRotate(n);
+                // Right subtree is taller than left subtree. Rotate left to restore balance.
+                if (heightDiff(node.right) > 0) {
+                    node.right = rightRotate(node.right);
+                    return leftRotate(node);
                 } else {
-                    return leftRotate(n);
+                    return leftRotate(node);
                 }
             } else if (heightDiff > 1) {
-                if (heightDiff(n.left) < 0) {
-                    n.left = leftRotate(n.left);
-                    return rightRotate(n);
+                // Left subtree is taller than right subtree. Rotate right to restore balance.
+                if (heightDiff(node.left) < 0) {
+                    node.left = leftRotate(node.left);
+                    return rightRotate(node);
                 } else {
-                    return rightRotate(n);
+                    return rightRotate(node);
                 }
-            } else;
+            } else
+                ;
 
         }
-        return n;
+        return node;
     }
 
-    private AVLNode<T> leftRotate(AVLNode<T> n) {
-        AVLNode<T> r = n.right;
+    /**
+     * Left rotate the subtree rooted at the node n and return the new root.
+     *
+     * @param n the root of the subtree to rotate
+     * @return the new root of the subtree after rotation
+     */
+    private AVLNode leftRotate(AVLNode n) {
+        AVLNode r = n.right;
         n.right = r.left;
         r.left = n;
         n.height = Math.max(height(n.left), height(n.right)) + 1;
@@ -63,8 +82,14 @@ public class AVLTree<T> {
         return r;
     }
 
-    private AVLNode<T> rightRotate(AVLNode<T> n) {
-        AVLNode<T> r = n.left;
+    /**
+     * Right rotate the subtree rooted at the node n and return the new root.
+     * 
+     * @param n the root of the subtree to rotate
+     * @return the new root of the subtree after rotation
+     */
+    private AVLNode rightRotate(AVLNode n) {
+        AVLNode r = n.left;
         n.left = r.right;
         r.right = n;
         n.height = Math.max(height(n.left), height(n.right)) + 1;
@@ -72,19 +97,18 @@ public class AVLTree<T> {
         return r;
     }
 
-    private int heightDiff(AVLNode<T> a) {
+    private int heightDiff(AVLNode a) {
         if (a == null) {
             return 0;
         }
         return height(a.left) - height(a.right);
     }
 
-    private int height(AVLNode<T> a) {
+    private int height(AVLNode a) {
         if (a == null) {
             return 0;
         }
         return a.height;
     }
-
 
 }
