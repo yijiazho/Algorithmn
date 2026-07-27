@@ -7,10 +7,10 @@ class SegmentTreeNode {
     SegmentTreeNode left, right;
     // longest repeating characters in [start, end]
     int longestRepeating;
-    // longest repeating from [start, startRightBound]
-    int startRightBound;
-    // longest repeating from [endLeftBound, end]
-    int endLeftBound;
+    // right most index where [start, index] are the same character
+    int endIndexOfLongestRepeatingFromStart;
+    // left most index where [index, end] are the same character
+    int startIndexOfLongestRepeatingFromEnd;
 
     public SegmentTreeNode(int start, int end) {
         this.start = start;
@@ -18,6 +18,14 @@ class SegmentTreeNode {
     }
 }
 
+/**
+ * 
+ * SegmentTree is a data structure that allows for efficient updates and queries
+ * on an array. In this implementation, we use a segment tree to efficiently
+ * execute a series of queries that update the character in a string and
+ * calculate the length of the longest substring consisting of one character
+ * only.
+ */
 public class SegmentTree {
 
     /**
@@ -34,7 +42,7 @@ public class SegmentTree {
      *                        the ith query
      * @return the length of longest substring, after each query
      */
-    public int[] longestRepeating(String s, String queryCharacters, int[] queryIndices) {
+    public int[] findLongestRepeating(String s, String queryCharacters, int[] queryIndices) {
         char[] chars = s.toCharArray();
         int n = queryIndices.length;
         int[] res = new int[n];
@@ -58,14 +66,13 @@ public class SegmentTree {
         return res;
     }
 
-    // build a balanced tree inorder
     private SegmentTreeNode buildTree(char[] chars, int start, int end) {
         SegmentTreeNode root = new SegmentTreeNode(start, end);
 
         if (start == end) {
             root.longestRepeating = 1;
-            root.startRightBound = start;
-            root.endLeftBound = start;
+            root.endIndexOfLongestRepeatingFromStart = start;
+            root.startIndexOfLongestRepeatingFromEnd = start;
             return root;
         }
 
@@ -76,31 +83,7 @@ public class SegmentTree {
 
         root.left = left;
         root.right = right;
-        root.endLeftBound = right.endLeftBound;
-        root.startRightBound = left.startRightBound;
-
-        if (chars[mid] == chars[mid + 1]) {
-            // calculate the length, including the char at mid and mid + 1
-            int length = 0;
-
-            // all [start, mid] are the same char, try to concat
-            // the right of [mid + 1, startRightBound]
-            if (left.startRightBound == mid) {
-                root.startRightBound = right.startRightBound;
-            }
-
-            // similarly, all [mid + 1, end] are same char, concat to left
-            // [endLeftBound, mid]
-            if (right.endLeftBound == mid + 1) {
-                root.endLeftBound = left.endLeftBound;
-            }
-        }
-
-        // 4 options, 1. longest in left, 2. longest in right
-        // 3. [start, startRightEnd], 4.[endLeftBound, end]
-        root.longestRepeating = Math.max(root.startRightBound - root.start + 1,
-                Math.max(root.end - root.endLeftBound + 1,
-                        Math.max(left.longestRepeating, right.longestRepeating)));
+        recompute(root, chars);
 
         return root;
     }
@@ -110,56 +93,51 @@ public class SegmentTree {
         // leaf node, start == end == index
         if (root.start == root.end) {
             root.longestRepeating = 1;
-            root.startRightBound = index;
-            root.endLeftBound = index;
+            root.endIndexOfLongestRepeatingFromStart = index;
+            root.startIndexOfLongestRepeatingFromEnd = index;
             return;
         }
 
         int mid = root.start + (root.end - root.start) / 2;
 
         if (index >= root.start && index <= mid) {
-            // update left tree recursively
             updateTree(root.left, index, chars);
-
-            // update the variables of root
-            if (chars[mid] == chars[mid + 1]) {
-                // all [start, mid] are the same char, try to concat
-                // the right of [mid + 1, startRightBound]
-                if (root.left.endLeftBound == mid) {
-                    root.endLeftBound = root.right.endLeftBound;
-                }
-                root.longestRepeating = Math.max(root.longestRepeating,
-                        Math.max(root.left.longestRepeating, root.endLeftBound - root.start + 1));
-            }
         } else {
-            // update right tree recursively
             updateTree(root.right, index, chars);
+        }
 
-            // update the variables of root
-            if (chars[mid] == chars[mid + 1]) {
-                // all [mid + 1, end] are the same char, try to concat
-                // the left of [endLeftBound, mid]
-                if (root.right.startRightBound == mid + 1) {
-                    root.startRightBound = root.left.startRightBound;
-                }
-                root.longestRepeating = Math.max(root.longestRepeating,
-                        Math.max(root.right.longestRepeating, root.end - root.startRightBound + 1));
+        recompute(root, chars);
+    }
+
+    /**
+     * Recompute the cached values of the current node.
+     * 
+     * @param root  the current node to recompute
+     * @param chars the modified character array
+     */
+    private void recompute(SegmentTreeNode root, char[] chars) {
+        SegmentTreeNode left = root.left;
+        SegmentTreeNode right = root.right;
+        int mid = left.end;
+
+        root.longestRepeating = 1;
+        root.endIndexOfLongestRepeatingFromStart = left.endIndexOfLongestRepeatingFromStart;
+        root.startIndexOfLongestRepeatingFromEnd = right.startIndexOfLongestRepeatingFromEnd;
+
+        if (chars[mid] == chars[mid + 1]) {
+            if (left.endIndexOfLongestRepeatingFromStart == mid) {
+                root.endIndexOfLongestRepeatingFromStart = right.endIndexOfLongestRepeatingFromStart;
             }
+
+            if (right.startIndexOfLongestRepeatingFromEnd == mid + 1) {
+                root.startIndexOfLongestRepeatingFromEnd = left.startIndexOfLongestRepeatingFromEnd;
+            }
+
+            root.longestRepeating = Math.max(root.longestRepeating,
+                    right.endIndexOfLongestRepeatingFromStart - left.startIndexOfLongestRepeatingFromEnd + 1);
         }
 
+        root.longestRepeating = Math.max(root.longestRepeating,
+                Math.max(left.longestRepeating, right.longestRepeating));
     }
-
-    public static final void main(String[] args) {
-        SegmentTree instance = new SegmentTree();
-        String s = "babacc";
-        String chars = "bcb";
-        int[] indices = new int[] { 1, 3, 3 };
-
-        int[] res = instance.longestRepeating(s, chars, indices);
-
-        for (int n : res) {
-            System.out.println(n);
-        }
-    }
-
 }
