@@ -5,7 +5,7 @@ import java.util.List;
 
 public class StringMatching {
 
-    public List<Integer> findAllPatterns(String text, String pattern) {
+    public List<Integer> findAllPatternsWithZ(String text, String pattern) {
         String s = pattern + "$" + text;
         int[] z = zFunction(s);
         List<Integer> positions = new ArrayList<>();
@@ -18,6 +18,38 @@ public class StringMatching {
         return positions;
     }
 
+    public List<Integer> findAllPatternsWithKMP(String text, String pattern) {
+        List<Integer> positions = new ArrayList<>();
+        int[] lps = lps(pattern);
+        int i = 0;
+        int j = 0;
+        while (i < text.length()) {
+            if (text.charAt(i) == pattern.charAt(j)) {
+                i++;
+                j++;
+                if (j == pattern.length()) {
+                    positions.add(i - j);
+                    // check next possible
+                    j = lps[j - 1];
+                }
+            } else {
+                if (j != 0) {
+                    j = lps[j - 1];
+                } else {
+                    i++;
+                }
+            }
+
+        }
+        return positions;
+    }
+
+    /**
+     * Generate the z function based on the string of concatenation of pattern + text
+     * And returns
+     * @param s
+     * @return
+     */
     private int[] zFunction(String s) {
         int n = s.length();
         int[] z = new int[n];
@@ -53,5 +85,37 @@ public class StringMatching {
             }
         }
         return z;
+    }
+
+    /**
+     * Calculate the longest prefix which is also a suffix as an array
+     * @param pattern The pattern string to be matched
+     * @return lps array
+     */
+    private int[] lps(String pattern) {
+        int n = pattern.length();
+        int[] lps = new int[n];
+        // position we are calculating
+        int i = 1;
+        // length of current match
+        int j = 0;
+
+        while (i < n) {
+            // match s[i] and s[len]
+            if (pattern.charAt(i) == pattern.charAt(j)) {
+                j++;
+                lps[i] = j;
+                i++;
+            } else {
+                // [0, lps[j - 1]) are matched, so the next to compare is lps[j - 1]
+                if (j != 0) {
+                j = lps[j - 1];
+                } else {
+                    lps[i] = 0;
+                    i++;
+                }
+            }
+        }
+        return lps;
     }
 }

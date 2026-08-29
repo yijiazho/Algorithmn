@@ -3,6 +3,7 @@ package search;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Stack;
 
 import utility.ArrayUtils;
 
@@ -35,7 +36,7 @@ public class Permutations {
 
     /**
      * Sort the int array and find out the next permutations
-     * For example, {7, 2, 5, 3, 8} -> {7, 2, 3, 5, 8}
+     * For example, {7, 2, 5, 3, 8} -> {7, 2, 5, 8, 3}
      * When decresing {5, 4, 3, 2, 1} -> {1, 2, 3, 4, 5}
      * 
      * @param nums integer array, non empty
@@ -59,7 +60,7 @@ public class Permutations {
             }
 
         } else {
-            // find the first larger than left side of the peak
+            // find the first larger than peak left in the right side of the peak
             int j;
             for (j = l - 1; j >= i; j--) {
                 if (nums[j] > nums[i - 1]) {
@@ -70,6 +71,37 @@ public class Permutations {
             Arrays.sort(nums, i, l);
         }
 
+    }
+
+    /**
+     * Construct the smallest permutation with numbers in range [1, n]
+     * It should match the string limit. The string contains 'l' and 's'
+     * 'l' means the next value is larger, 's' means smaller
+     * @param s String of size n - 1, made of 's' and 'l' only
+     * @return the smallest permutation array
+     */
+    public int[] smallestPermutation(String s) {
+        int n = s.length();
+        int[] result = new int[n + 1];
+
+        int curValue = 1;
+        int curIndex = 0;
+        Stack<Integer> candidates = new Stack<>();
+
+        String p = s + "l";
+        for (int i = 0; i <= n; i++) {
+            // add new candidate
+            candidates.push(curValue);
+            curValue++; 
+            if (p.charAt(i) == 'l') {
+                while (!candidates.isEmpty()) {
+                    result[curIndex] = candidates.pop();
+                    curIndex++;
+                }
+            } 
+        }
+
+        return result;
     }
 
     public List<String> generatePalindromePermutations(String s) {
