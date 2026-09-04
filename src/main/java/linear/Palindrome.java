@@ -1,5 +1,9 @@
 package linear;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 public class Palindrome {
 
     /**
@@ -132,5 +136,75 @@ public class Palindrome {
         return false;
 
         // alternatively, we can use Subsequence.longestPalindromeSubsequence()
+    }
+
+    /**
+     * Given an array of strings, we are allowed to freely redistribute all characters
+     * What are the max number of palindrome words to be formed
+     * 
+     * @param words non empty array of string, each string is non empty and with lower case only
+     * 
+     */
+    public int maxPalindromeStrings(String[] words) {
+
+        int[] freqMap = new int[26];
+        List<Integer> lengths = new ArrayList<>();
+        for (String word: words) {
+            int len = word.length();
+            lengths.add(len);
+            for (int i = 0; i < len; i++) {
+                freqMap[word.charAt(i) - 'a']++;
+            }
+        }
+
+        int count = 0;
+        Collections.sort(lengths);
+        // redistribute from smaller size
+        for (int i = 0; i < words.length; i++) {
+            if (removeInPairs(freqMap, lengths.get(i))) {
+                count++;
+            } else {
+                break;
+            }
+        }
+        return count;
+    }
+
+    private void removeSingle(int[] freqMap) {
+        // remove first odd
+        for (int i = 0; i < 26; i++) {
+            if (freqMap[i] % 2 == 1) {
+                freqMap[i]--;
+                return;
+            } 
+        }
+
+        // if all freq are even, remove any
+        for (int i = 0; i < 26; i++) {
+            if (freqMap[i] > 0) {
+                freqMap[i]--;
+                return;
+            }
+        }
+    }
+
+    private boolean removeInPairs(int[] freqMap, int target) {
+        if (target % 2 == 1) {
+            removeSingle(freqMap);
+            target--;
+        }
+
+        for (int i = 0; i < 26; i++) {
+            while (freqMap[i] > 1 && target > 0) {
+                target -= 2;
+                freqMap[i] -= 2;
+            }
+            if (target == 0) {
+                return true;
+            }             
+        }
+        
+
+        return target == 0;
     }
 }

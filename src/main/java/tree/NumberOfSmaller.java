@@ -22,6 +22,19 @@ public class NumberOfSmaller {
         return res;
     }
 
+    public int[] numberOfSmallerOnTheRight(int[] nums) {
+        int n = nums.length;
+        int[] res = new int[n];
+        TreeNode root = null;
+
+        for (int i = n - 1; i >= 0; i--) {
+            res[i] = countSmaller(root, nums[i]);
+            root = insert(root, nums[i]);
+        }
+
+        return res;
+    }
+
     /**
      * Insert a value into the binary search tree and return the root of the tree
      * 
