@@ -3,6 +3,8 @@ package linear;
 import java.util.ArrayList;
 import java.util.List;
 
+import dataStructure.Trie;
+
 public class StringMatching {
 
     public List<Integer> findAllPatternsWithZ(String text, String pattern) {
@@ -42,6 +44,19 @@ public class StringMatching {
 
         }
         return positions;
+    }
+
+    /**
+     * Match all the patterns in single text string
+     * @param text original string 
+     * @param patterns patterns to match
+     * @return  a list of matched pairs, each pair is made of two elements:
+     *          index in the text for which starting position is matched, 
+     *          and index in the patterns for which pattern is matched.
+     */
+    public List<List<Integer>> multiplePatternMatching(String text, List<String> patterns) {
+        Trie trie = new Trie(patterns);
+        return trie.searchAllMatches(text);  
     }
 
     /**
