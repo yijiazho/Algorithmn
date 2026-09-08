@@ -1,4 +1,4 @@
-package tree;
+package dataStructure.rangeQuery;
 
 class SegmentTreeNode {
     // start and end index of the segment
@@ -30,8 +30,8 @@ public class SegmentTree {
 
     /**
      * Given an string s, and another string queryCharacters of length k and array
-     * of indicies of length k. So we have k queries. Each query[i] updates the
-     * character in the original string s, of queryIndicies[i], to character
+     * of indices of length k. So we have k queries. Each query[i] updates the
+     * character in the original string s, of queryIndices[i], to character
      * queryCharacters[i]. Find out the length of longest substring in original
      * string s, consisting only one repeating characters, after each single query
      * 

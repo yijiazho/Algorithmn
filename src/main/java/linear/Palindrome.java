@@ -170,6 +170,55 @@ public class Palindrome {
         return count;
     }
 
+    /**
+     * Make original string to anti-palindrome, which means any character in string is different
+     * from the matching position. You can freely redistribute the characters. Find the
+     * lexicographically smallest if there are multiple ones.
+     *
+     * @param s original string, non empty and length is even, with lower case only
+     * @return the anti-palindrome string
+     */
+    public String antiPalindromeString(String s) {
+        int n = s.length();
+        int[] freqMap = new int[26];
+        for (char c : s.toCharArray()) {
+            freqMap[c - 'a']++;
+        }
+        for (int i = 0; i < 26; i++) {
+            if (freqMap[i] > n / 2) {
+                return "-1";
+            }
+        }
+
+        // to keep lexicographical order we start from character 'a' on the leftmost side
+        char[] chars = new char[n];
+        int len = 0;
+        for (int i = 0; i < 26; i++) {
+            for (int j = 0; j < freqMap[i]; j++) {
+                chars[len] = (char)('a' + i);
+                len++;
+            }
+        }
+
+        // the only place can be matching is in the middle
+        int index = n / 2;
+        char c = chars[index];
+        while (index < n && chars[index] == c) {
+            index++;
+        }
+
+        // index at the first non-matching
+        int start = n / 2;
+        while (chars[start] == chars[n - 1 - start]) {
+            // swap the char with the next char
+            swap(chars, index, start);
+            start++;
+            index++;
+        }
+
+        return new String(chars);
+    }
+
     private void removeSingle(int[] freqMap) {
         // remove first odd
         for (int i = 0; i < 26; i++) {
@@ -206,5 +255,11 @@ public class Palindrome {
         
 
         return target == 0;
+    }
+
+    private void swap(char[] array, int i, int j) {
+        char tmp = array[i];
+        array[i] = array[j];
+        array[j] = tmp;
     }
 }

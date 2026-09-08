@@ -1,4 +1,4 @@
-package tree;
+package dataStructure.rangeQuery;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 

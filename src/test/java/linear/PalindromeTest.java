@@ -34,4 +34,18 @@ public class PalindromeTest {
         boolean result = palindrome.isPalindromeAfterRemovingAtMostKCharacters(s, 2);
         assertEquals(true, result);
     }
+
+    @Test
+    public void testAntiPalindromeString() {
+        String s = "bcbacdab";
+        String result = palindrome.antiPalindromeString(s);
+        assertEquals("aabbccbd", result);
+    }
+
+    @Test
+    public void testAntiPalindromeStringNotPossible() {
+        String s = "bcbabb";
+        String result = palindrome.antiPalindromeString(s);
+        assertEquals("-1", result);
+    }
 }

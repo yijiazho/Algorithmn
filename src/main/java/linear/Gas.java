@@ -1,7 +1,9 @@
 package linear;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.PriorityQueue;
 
 public class Gas {
 
@@ -98,4 +100,36 @@ public class Gas {
         }
         return minStops == stations.length + 1 ? - 1: minStops;
     }
+
+    public int minRefillsToDestinationGreedy(int destination, int startFuel, int[][] stations) {
+        // If we want to refuel, we will prefer refueling at station with the most fuel reserve
+        int n = stations.length;
+        int count = 0;
+        PriorityQueue<Integer> visitedStations = new PriorityQueue<>((i, j) -> stations[j][1] - stations[i][1]);
+
+        int reachableIndex = 0;
+        while (startFuel < destination) {
+            boolean reachNextStation = false;
+
+            // for all stations in the path, we add them to the candidate.
+            while (reachableIndex < n && stations[reachableIndex][0] <= startFuel) {
+                reachNextStation = true;
+                visitedStations.add(reachableIndex);
+                reachableIndex++;
+            }
+
+            // if cannot reach next station, select best from candidate
+            if (!reachNextStation) {
+                if (visitedStations.isEmpty()) {
+                    // stopped at all stations at path, still fails
+                    return -1;
+                }
+                startFuel += stations[visitedStations.poll()][1];
+                count++;
+            }
+        }
+
+        return count;
+    }
+
 }

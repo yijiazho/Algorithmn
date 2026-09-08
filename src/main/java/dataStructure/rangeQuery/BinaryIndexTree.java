@@ -1,5 +1,9 @@
-package tree;
+package dataStructure.rangeQuery;
 
+/**
+ * Binary Index Tree is a specific segment tree, which keeps the sum between array[0] and array[i]
+ * It is best for efficiently range query, and update specific value in the array
+ */
 public class BinaryIndexTree {
 
     //parent of bit[x] is bit[y], where y = x - (x & (-x))
@@ -28,7 +32,7 @@ public class BinaryIndexTree {
     }
 
     // return sum from left to right, both inclusive
-    public int sum(int left, int right) {
+    public int rangeSum(int left, int right) {
         return query(right + 1) - query(left);
     }
 
@@ -40,24 +44,5 @@ public class BinaryIndexTree {
             index -= index & (-index);
         }
         return sum;
-    }
-
-
-    public static void main(String[] args) {
-        int[] array = {1, 3, 5, 7, 9, 11};
-        BinaryIndexTree instance = new BinaryIndexTree(array);
-
-
-        System.out.println(instance.query(2));
-        System.out.println(instance.query(6));
-        System.out.println(instance.sum(2,5));
-
-        instance.update(2, 15);
-        System.out.println("*********************");
-        for (int i = 0; i < 6; i++) {
-            System.out.println(instance.bit[i + 1]);
-        }
-        System.out.println(instance.query(6));
-        System.out.println(instance.sum(2,5));
     }
 }
