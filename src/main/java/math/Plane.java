@@ -4,7 +4,75 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static utility.MathUtils.gcd;
+
 public class Plane {
+
+    /**
+     * In a 2D plane [-n, n] ^ 2, we can choose any int pair to set a blocker
+     * The observer is located at (0, 0). Any positions after that blocker
+     * will be blocked. If we place blocker at (x, y), then (2x, 2y), (3x, 3y),
+     * ... , (kx, ky) will be blocked. Find out the minimum number of blockers
+     * @param n the half size of the border
+     * @return minimum number of blockers
+     */
+    public int numberOfBlockers(int n) {
+        // only consider the range of (0, n]
+        // We need to set blockers at (x, y) where gcd(x, y) = 1
+        // otherwise gcd(x, y) = k, then we can set block at x/k, y/k
+
+        int count = 0;
+        for (int i = 1; i <= n; i++) {
+            for (int j = 1; j <= n; j++) {
+                if (gcd(i, j) == 1) {
+                    count++;
+                }
+            }
+        }
+        // mirror it in 4 parts, with 4 axis directions
+        return 4 * (count + 1);
+    }
+
+    /**
+     * Observer at position (0, 0) and starts rotating, with the field of view
+     * How many degrees must observer rotates to cover at least k points.
+     * Points will not block other points with at the same angle.
+     * @param points original points in 2d coordinate, non empty [x, y] coordinates
+     * @param fov original field of view of observer, which means it can view
+     *            fov without rotation. in degrees [0, 360]
+     * @param k number of points need to be scanned
+     * @return minimum rotation degrees, [0, 360]
+     */
+    public double minRotationDegree(int[][] points, double fov, int k) {
+        int n = points.length;
+
+        // copy over the angles by + 360
+        double[] angles = new double[2 * n];
+
+        for (int i = 0; i < n; i++) {
+            int x = points[i][0];
+            int y = points[i][1];
+
+            double angle = Math.toDegrees(Math.atan2(y, x));
+            if (angle < 0) {
+                angle += 360.0;
+            }
+            angles[i] = angle;
+        }
+
+        Arrays.sort(angles, 0, n);
+        for (int i = 0; i < n; i++) {
+            angles[i + n] = angles[i] + 360.0;
+        }
+
+        double min = 360.0;
+        for (int i = 0; i < n; i++) {
+            // try to cover from i to i + k - 1
+            double width = angles[i + k - 1] - angles[i];
+            min = Math.min(min, width);
+        }
+        return Math.max(0.0, min - fov);
+    }
 
     /**
      * Find out the min distance between any possible combination
@@ -34,7 +102,7 @@ public class Plane {
      */
     public int maxMinimumDistance(int[][] points) {
         // bipartisan problem
-        // for any distsance d
+        // for any distance d
         // we want to know if we can achieve min distance >= d in each subset (1)
         // And then do binary search for each d (2)
 
@@ -63,6 +131,31 @@ public class Plane {
         }
 
         return left;
+    }
+
+    /**
+     * Tell if the 4 given points in 2D plane can form rectangular
+     * @param points 4 (x, y) pairs in 2D coordinates
+     * @return if they can form a rectangle
+     */
+    public boolean isRectangle(int[][] points) {
+
+        int[] distSquare = new int[6];
+        int index = 0;
+        for (int i = 0; i < 4; i++) {
+            for (int j = i + 1; j < 4; j++) {
+                distSquare[index] = distanceSquare(points[i], points[j]);
+                index++;
+            }
+        }
+
+        // after sorting, we get a^2, a^2, b^2, b^2, a^2 + b^2, a^2 + b^2
+        Arrays.sort(distSquare);
+        return distSquare[0] > 0 &&
+                distSquare[0] == distSquare[1] &&
+                distSquare[2] == distSquare[3] &&
+                distSquare[4] == distSquare[5] &&
+                distSquare[0] + distSquare[2] == distSquare[5];
     }
 
     private boolean canSplit(int[][] points, int limit) {
@@ -176,5 +269,11 @@ public class Plane {
         int dx = p1[0] - p2[0];
         int dy = p1[1] - p2[1];
         return Math.abs(dx) + Math.abs(dy);
+    }
+
+    private int distanceSquare(int[] p1, int[] p2) {
+        int dx = p1[0] - p2[0];
+        int dy = p1[1] - p2[1];
+        return dx * dx + dy * dy;
     }
 }

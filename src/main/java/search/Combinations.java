@@ -169,6 +169,30 @@ public class Combinations {
         return array;
     }
 
+    public int countSubsetsDivisibleByK(int[] nums, int k) {
+        int n = nums.length;
+        // n[i][j] is number of subsets with module = j at index i
+        // n[i][j] = n[i - 1][j] + n[i - 1][(j - nums[i]) % mod]
+        // first element is to skip, second element is to choose nums[i]
+        // since this is rolling, we only need to keep 1D array
+        int[] numberOfSubsetsWithModule = new int[n];
+        numberOfSubsetsWithModule[0] = 1;
+
+        for (int i = 0; i < n; i++) {
+            int[] next = numberOfSubsetsWithModule.clone();
+
+            int mod = (nums[i] + 1000 * k) % k;
+            for (int j = 0; j < k; j++) {
+                int nextR = (j + mod) % k;
+                next[nextR] += numberOfSubsetsWithModule[j];
+            }
+
+            numberOfSubsetsWithModule = next;
+        }
+
+        return numberOfSubsetsWithModule[0];
+    }
+
     private List<Integer> reconstructFromSubsetSums(List<Integer> subsetSums, int n) {
         if (n == 1) {
             if (!subsetSums.contains(0)) {

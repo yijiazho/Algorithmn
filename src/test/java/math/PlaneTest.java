@@ -1,9 +1,9 @@
 package math;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 public class PlaneTest {
     private Plane plane;
@@ -63,5 +63,134 @@ public class PlaneTest {
         };
         int maxMinDistance = plane.maxMinimumDistance(points);
         assertEquals(11, maxMinDistance);
+    }
+
+    @Test
+    public void testNumberOfBlockersNoBlocking() {
+        int result = plane.numberOfBlockers(1);
+        assertEquals(8, result);
+    }
+
+    @Test
+    public void testNumberOfBlockersWithBlocking() {
+        int result = plane.numberOfBlockers(2);
+        assertEquals(16, result);
+    }
+
+    @Test
+    public void testIsRectangleParallelToCoordinates() {
+        int[][] points = new int[][] {
+                {0, 0},
+                {2, 0},
+                {0, 1},
+                {2, 1}
+        };
+        assertTrue(plane.isRectangle(points));
+    }
+
+    @Test
+    public void testIsRectangleNotParallelToCoordinates() {
+        int[][] points = new int[][] {
+                {0, 0},
+                {1, 3},
+                {-1, 1},
+                {2, 2}
+        };
+        assertTrue(plane.isRectangle(points));
+    }
+
+    @Test
+    public void testIsRectangleFalse() {
+        int[][] points = new int[][] {
+                {0, 1},
+                {1, 3},
+                {-1, 1},
+                {2, 2}
+        };
+        assertFalse(plane.isRectangle(points));
+    }
+
+    @Test
+    public void testMinRotationDegree() {
+        int[][] points = new int[][] {
+                {1, 0},
+                {1, 1},
+                {0, 1},
+                {-1, 1},
+                {-1, 0},
+                {-1, -1},
+                {0, -1},
+                {1, -1}
+        };
+        double result = plane.minRotationDegree(points, 0, 5);
+        assertEquals(180.0, result);
+    }
+
+    @Test
+    public void testMinRotationDegreeWithFieldOfView() {
+        int[][] points = new int[][] {
+                {1, 0},
+                {1, 1},
+                {0, 1},
+                {-1, 1},
+                {-1, 0},
+                {-1, -1},
+                {0, -1},
+                {1, -1}
+        };
+        double result = plane.minRotationDegree(points, 45, 5);
+        assertEquals(135.0, result);
+    }
+
+    @Test
+    public void testMinRotationDegreeWithFieldOfViewAndNoROtationRequired() {
+        int[][] points = new int[][] {
+                {1, 0},
+                {1, 1},
+                {0, 1},
+                {-1, 1},
+                {-1, 0},
+                {-1, -1},
+                {0, -1},
+                {1, -1}
+        };
+        double result = plane.minRotationDegree(points, 45, 2);
+        assertEquals(0.0, result);
+    }
+
+    @Test
+    public void testMinRotationDegreeWithFieldOfViewAndPointsWithSameDegree() {
+        int[][] points = new int[][] {
+                {1, 0},
+                {1, 1},
+                {0, 1},
+                {-1, 1},
+                {-1, 0},
+                {-1, -1},
+                {0, -1},
+                {1, -1},
+                {2, 2},
+                {3, 3}
+        };
+        double result = plane.minRotationDegree(points, 45, 5);
+        assertEquals(45.0, result);
+    }
+
+    @Test
+    public void testMinRotationDegreeWithFieldOfViewAndUnevenDistribution() {
+        int[][] points = new int[][] {
+                {1, 0},
+                {1, 1},
+                {0, 1},
+                {-1, 1},
+                {-1, 0},
+                {-1, -1},
+                {0, -1},
+                {1, -1},
+                {1, 2},
+                {2, 1}
+        };
+        double result = plane.minRotationDegree(points, 45, 5);
+        assertEquals(45.0, result);
     }
 }

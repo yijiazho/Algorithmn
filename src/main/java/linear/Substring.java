@@ -1,6 +1,7 @@
 package linear;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class Substring {
@@ -335,5 +336,37 @@ public class Substring {
         }
 
         return (int) totalCost;
+    }
+
+    /**
+     * Split the original int array into k subsets of equal size. In each subset,
+     * calculate the difference by max(subset) - min(subset). Find the min possible
+     * sum of all differences in all subsets. There is no duplicate elements in the
+     * same subset.
+     *
+     * @param nums original int array, non empty, len % k == 0
+     * @param k int size
+     * @return the min possible sum of differences
+     */
+    public int minDifferenceSum(int[] nums, int k) {
+        // we need to sort that, and break into k chunks evenly
+        // each chunk is represented by index, from 1 to k
+
+        // prove no better way to split
+        // for chunk i and j, i < j, all elements in i <= all elements in j
+        // if we swap 2 random in i and j chunk respectively
+        // max(i) increase, min(j) decreases, diff(i) and diff(j) increases
+        // so any swap makes things worse
+
+        Arrays.sort(nums);
+        int size = nums.length / k;
+        int sum = 0;
+
+        for (int i = 0; i < k; i++) {
+            int offset = i * size;
+            sum += nums[offset + size - 1] - nums[offset];
+        }
+
+        return sum;
     }
 }

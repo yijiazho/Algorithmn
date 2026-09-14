@@ -128,4 +128,24 @@ public class CombinationsTest {
         assertArrayEquals(nums, originalArray);
     }
 
+    @Test
+    public void testCountSubsetsDivisibleByK() {
+        int[] nums = new int[] {3, 2, 1};
+        int result = combination.countSubsetsDivisibleByK(nums, 3);
+        assertEquals(4, result);
+    }
+
+    @Test
+    public void testCountSubsetsDivisibleByKNegative() {
+        int[] nums = new int[] {-3, -2, -1};
+        int result = combination.countSubsetsDivisibleByK(nums, 3);
+        assertEquals(4, result);
+    }
+
+    @Test
+    public void testCountSubsetsDivisibleByKAllCombinations() {
+        int[] nums = new int[] {3, 6, 9, 0};
+        int result = combination.countSubsetsDivisibleByK(nums, 3);
+        assertEquals(16, result);
+    }
 }
