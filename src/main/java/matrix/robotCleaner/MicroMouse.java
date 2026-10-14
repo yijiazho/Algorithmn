@@ -1,6 +1,6 @@
 package matrix.robotCleaner;
 
-public interface GridMaster {
+public interface MicroMouse {
     // Directions: U, D, L, R
     boolean canMove(char direction);
 

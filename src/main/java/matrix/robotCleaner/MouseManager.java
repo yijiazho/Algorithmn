@@ -10,7 +10,7 @@ import java.util.Set;
 
 import com.google.common.collect.ImmutableMap;
 
-public class RobotManager {
+public class MouseManager {
 
     private static final Map<Character, int[]> DIRECTIONS = ImmutableMap.of(
             'U', new int[] { 0, 1 },
@@ -31,28 +31,28 @@ public class RobotManager {
      * @param master
      * @return
      */
-    public int findShortestPath(GridMaster master) {
+    public int findShortestPath(MicroMouse mouse) {
 
         // rebuild the graph, key is the unblocked cell, value is the map of direction
         // to the next unblocked cell
         Map<Cell, Map<Character, Cell>> graph = new HashMap<>();
         Cell start = new Cell(0, 0);
-        buildGraph(master, graph, new HashSet<>(), start);
+        buildGraph(mouse, graph, new HashSet<>(), start);
 
         // traverse to find shortest path
         Queue<Cell> queue = new LinkedList<>();
         queue.offer(start);
-        return findShortestPath(master, graph, queue, new HashSet<>());
+        return findShortestPath(mouse, graph, queue, new HashSet<>());
     }
 
-    private int findShortestPath(GridMaster master, Map<Cell, Map<Character, Cell>> graph, Queue<Cell> queue,
+    private int findShortestPath(MicroMouse mice, Map<Cell, Map<Character, Cell>> graph, Queue<Cell> queue,
             Set<Cell> visited) {
         int steps = 0;
         while (!queue.isEmpty()) {
             int size = queue.size();
             for (int i = 0; i < size; i++) {
                 Cell current = queue.poll();
-                if (master.isTarget()) {
+                if (mice.isTarget()) {
                     return steps;
                 }
 
@@ -67,7 +67,7 @@ public class RobotManager {
         return -1;
     }
 
-    private void buildGraph(GridMaster master, Map<Cell, Map<Character, Cell>> graph, Set<Cell> visited, Cell current) {
+    private void buildGraph(MicroMouse mouse, Map<Cell, Map<Character, Cell>> graph, Set<Cell> visited, Cell current) {
 
         // build the graph from the current cell
         for (Map.Entry<Character, int[]> entry : DIRECTIONS.entrySet()) {
@@ -75,7 +75,7 @@ public class RobotManager {
             int[] delta = entry.getValue();
 
             // check if not blocked
-            if (master.canMove(dir)) {
+            if (mouse.canMove(dir)) {
                 // build an edge from start to the next cell
                 int newX = current.x + delta[0];
                 int newY = current.y + delta[1];
@@ -88,9 +88,9 @@ public class RobotManager {
                     graph.computeIfAbsent(nextCell, k -> new HashMap<>()).put(OPPOSITE_DIRECTIONS.get(dir), current);
 
                     // move to next cell and traverse
-                    master.move(dir);
-                    buildGraph(master, graph, visited, nextCell);
-                    master.move(OPPOSITE_DIRECTIONS.get(dir));
+                    mouse.move(dir);
+                    buildGraph(mouse, graph, visited, nextCell);
+                    mouse.move(OPPOSITE_DIRECTIONS.get(dir));
                 }
             }
         }

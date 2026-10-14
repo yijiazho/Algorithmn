@@ -36,7 +36,7 @@ public class Probability {
         for (int j = 0; j <= n; j++) {
             p[0][j] = 1.0;
         }
-        p[1][1] = 1.0;
+        // p[1][1] = 1.0;
         
 
         // we could improve this to use a sliding window. 
@@ -44,21 +44,31 @@ public class Probability {
         // We do not need to calculate the sum again
         // Define window w[i][k] = p[i-1][k] + p[i-2][k] + ... + p[i-k][k]
         // w[i][k] - w[i-1][k] = p[i-1][k] - p[i-k-1][k]
-        
-        for (int i = 2; i <= n; i++) {
-            for (int k = 1; k <= i; k++) {
-                double sum = 0.0;
+        // we need to iterate with k first
 
-                // keep a window of size k
+
+        for (int k = 1; k <= n; k++) {
+            double sum = 0.0;
+
+            // by definition it's 1.0
+            for (int i = 1; i <= n; i++) {
                 sum += p[i - 1][k];
+
                 if (i - k - 1 >= 0) {
                     sum -= p[i - k - 1][k];
                 }
-
-                p[i][k] = sum / i;
+                if (i <= k) {
+                    p[i][k] = 1.0;
+                } else {
+                    p[i][k] = sum / i;
+                }
             }
         }
 
-        return p[n];
+        double[] probabilities = new double[n + 1];
+        for (int i = n; i > 0; i--) {
+            probabilities[i] = p[n][i] - p[n][i - 1];
+        }
+        return probabilities;
     }
 }
